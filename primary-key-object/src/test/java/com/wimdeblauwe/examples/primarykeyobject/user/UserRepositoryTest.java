@@ -20,7 +20,7 @@ class UserRepositoryTest {
     private EntityManager entityManager;
 
     @Test
-    @Sql(statements = "CREATE SEQUENCE IF NOT EXISTS HIBERNATE_SEQUENCE")
+    @Sql(statements = "CREATE SEQUENCE IF NOT EXISTS USER_SEQUENCE")
     public void testSaveUser() {
         User user = repository.save(new User("Wim"));
 

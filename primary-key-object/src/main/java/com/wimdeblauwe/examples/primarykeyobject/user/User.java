@@ -2,6 +2,8 @@ package com.wimdeblauwe.examples.primarykeyobject.user;
 
 import com.wimdeblauwe.examples.primarykeyobject.infrastructure.jpa.Entity;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.id.enhanced.SequenceStyleGenerator;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.GeneratedValue;
@@ -13,7 +15,11 @@ public class User implements Entity<UserId> {
     @EmbeddedId
     @GenericGenerator(
             name = "assigned-sequence",
-            strategy = "com.wimdeblauwe.examples.primarykeyobject.user.UserIdIdentifierGenerator")
+            strategy = "com.wimdeblauwe.examples.primarykeyobject.user.UserIdIdentifierGenerator",
+            parameters = {@Parameter(name = SequenceStyleGenerator.CONFIG_PREFER_SEQUENCE_PER_ENTITY,
+                    value = "true"),
+                    @Parameter(name = SequenceStyleGenerator.CONFIG_SEQUENCE_PER_ENTITY_SUFFIX,
+                            value = "_SEQUENCE")})
     @GeneratedValue(
             generator = "assigned-sequence",
             strategy = GenerationType.SEQUENCE)

@@ -23,7 +23,7 @@ class MultiRepositoryTest {
     private OrderRepository orderRepository;
 
     @Test
-    @Sql(statements = "CREATE SEQUENCE IF NOT EXISTS HIBERNATE_SEQUENCE")
+    @Sql(statements = "CREATE SEQUENCE IF NOT EXISTS HIBERNATE_SEQUENCE;CREATE SEQUENCE IF NOT EXISTS USER_SEQUENCE")
     public void testSaveUser() {
         User user = userRepository.save(new User("Wim"));
         Order order = orderRepository.save(new Order("ABC"));
