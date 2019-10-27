@@ -1,0 +1,23 @@
+= Using primary key objects with Spring Data and Hibernate
+
+== General
+
+Source code for the blog post https://wimdeblauwe.wordpress.com/2019/10/27/using-primary-key-objects-with-spring-data-and-hibernate/[Using primary key objects with Spring Data and Hibernate]
+
+Technologies used:
+
+* Java 11
+* Spring Boot 2.2.0
+* Hibernate 5.4.6
+
+== Building
+
+Run:
+[source]
+----
+mvn package
+----
+
+== Running
+
+Run from IntelliJ IDEA or use `mvn spring-boot:run`
