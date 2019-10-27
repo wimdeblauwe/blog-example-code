@@ -1,0 +1,31 @@
+= Spring Boot and Thymeleaf with CSS/JavaScript processing using Gulp
+
+== General
+
+Source code for the blog post https://wimdeblauwe.wordpress.com/2019/10/20/spring-boot-and-thymeleaf-with-css-javascript-processing-using-gulp/[Spring Boot and Thymeleaf with CSS/JavaScript processing using Gulp]
+
+Technologies used:
+
+* Java 11
+* Spring Boot 2.1.8
+* Thymeleaf 3.0.11
+
+== Building
+
+Run:
+[source]
+----
+gulp build
+----
+
+NOTE: Run `npm install gulp` first if you don't have it yet.
+
+Run:
+[source]
+----
+mvn package
+----
+
+== Running
+
+Run from IntelliJ IDEA or use `mvn spring-boot:run`
