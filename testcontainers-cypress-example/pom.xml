@@ -16,7 +16,7 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<tc-cypress.version>0.3.0-SNAPSHOT</tc-cypress.version>
+		<tc-cypress.version>0.2.0</tc-cypress.version>
 	</properties>
 
 	<dependencies>
