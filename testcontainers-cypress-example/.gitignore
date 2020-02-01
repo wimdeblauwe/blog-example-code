@@ -4,6 +4,11 @@ target/
 !**/src/main/**
 !**/src/test/**
 
+node_modules
+src/test/e2e/cypress/reports
+src/test/e2e/cypress/videos
+src/test/e2e/cypress/screenshots
+
 ### STS ###
 .apt_generated
 .classpath

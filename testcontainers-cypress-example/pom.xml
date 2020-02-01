@@ -16,6 +16,7 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<tc-cypress.version>0.3.0-SNAPSHOT</tc-cypress.version>
 	</properties>
 
 	<dependencies>
@@ -39,9 +40,24 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>io.github.wimdeblauwe</groupId>
+			<artifactId>testcontainers-cypress</artifactId>
+			<version>${tc-cypress.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+			</testResource>
+			<testResource>
+				<directory>src/test/e2e</directory>
+				<targetPath>e2e</targetPath>
+			</testResource>
+		</testResources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
