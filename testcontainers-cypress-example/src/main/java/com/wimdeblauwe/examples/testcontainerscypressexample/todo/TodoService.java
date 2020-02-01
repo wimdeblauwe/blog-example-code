@@ -9,16 +9,15 @@ import java.util.List;
 public class TodoService {
     private List<Todo> items = new ArrayList<>();
 
-    public TodoService() {
-        items.add(new Todo("Add Cypress tests"));
-        items.add(new Todo("Write blog post"));
-    }
-
     public void addTodoItem(Todo todo) {
         items.add(todo);
     }
 
     public List<Todo> findAll() {
         return items;
+    }
+
+    public void deleteAll() {
+        items.clear();
     }
 }
