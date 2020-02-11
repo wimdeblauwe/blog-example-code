@@ -2,7 +2,7 @@
 
 == General
 
-Source code for the blog post https://wimdeblauwe.wordpress.com/2020/02/01/example-usage-of-testcontainers-cypress/[Example usage of testcontainers-cypress]
+Source code for the blog post https://www.wimdeblauwe.com/blog/2020-02-01-example-usage-of-testcontainers-cypress/[Example usage of testcontainers-cypress]
 
 Technologies used:
 
