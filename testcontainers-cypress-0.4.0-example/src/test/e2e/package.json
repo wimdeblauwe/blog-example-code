@@ -1,0 +1,14 @@
+{
+  "name": "testcontainers-cypress-example",
+  "version": "0.0.1-SNAPSHOT",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "cypress": "^4.0.1",
+    "cypress-multi-reporters": "^1.2.3",
+    "mocha": "^7.0.1",
+    "mochawesome": "^4.1.0"
+  }
+}

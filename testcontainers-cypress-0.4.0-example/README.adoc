@@ -1,0 +1,26 @@
+= Example usage of testcontainers-cypress
+
+== General
+
+Source code for the blog post https://wimdeblauwe.wordpress.com/2020/02/01/example-usage-of-testcontainers-cypress/[Example usage of testcontainers-cypress]
+
+Technologies used:
+
+* Java 11
+* Spring Boot 2.2.4
+* Thymeleaf 3.0.11
+* Testcontainers-Cypress 0.2.0
+
+== Building
+
+Run:
+[source]
+----
+mvn package
+----
+
+== Running
+
+Run from IntelliJ IDEA or use `mvn spring-boot:run`
+
+
