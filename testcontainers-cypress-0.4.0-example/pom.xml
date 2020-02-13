@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.wimdeblauwe.examples</groupId>
-	<artifactId>testcontainers-cypress-example</artifactId>
+	<artifactId>testcontainers-cypress-0.4.0-example</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>testcontainers-cypress-example</name>
 	<description>Demo project showing how to use testcontainers-cypress</description>
