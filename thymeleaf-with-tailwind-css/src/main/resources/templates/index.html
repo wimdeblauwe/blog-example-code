@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>TODO list</title>
+</head>
+<body>
+<h1>TODO list</h1>
+<div>
+    <th:block th:if="${todos.size() > 0}">
+        <ul id="todo-items-list">
+            <li th:each="item : ${todos}" th:text="${item.description}">
+            </li>
+        </ul>
+    </th:block>
+    <th:block th:if="${todos.empty}">
+        <div id="empty-todos-message">There are no todo items</div>
+    </th:block>
+</div>
+</body>
+</html>
