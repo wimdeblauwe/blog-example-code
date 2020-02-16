@@ -13,6 +13,7 @@
     "gulp-babel": "^8.0.0",
     "gulp-environments": "^1.0.0",
     "gulp-postcss": "^8.0.0",
+    "gulp-purgecss": "^2.0.6",
     "gulp-terser": "^1.2.0",
     "gulp-uglifycss": "^1.1.0",
     "gulp-watch": "^5.0.1"

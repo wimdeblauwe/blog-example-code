@@ -6,6 +6,7 @@ const environments = require('gulp-environments');
 const uglifycss = require('gulp-uglifycss');
 const terser = require('gulp-terser');
 const postcss = require('gulp-postcss');
+const purgecss = require('gulp-purgecss');
 
 const production = environments.production;
 
@@ -30,6 +31,9 @@ gulp.task('copy-css', () =>
             require('tailwindcss'),
             require('autoprefixer'),
         ]))
+        .pipe(production(purgecss({
+            content: ['src/main/resources/templates/**/*.html']
+        })))
         .pipe(production(uglifycss()))
         .pipe(gulp.dest('target/classes/'))
 );
