@@ -6,17 +6,21 @@
     <title>TODO list</title>
 </head>
 <body>
-<h1>TODO list</h1>
-<div>
-    <th:block th:if="${todos.size() > 0}">
-        <ul id="todo-items-list">
-            <li th:each="item : ${todos}" th:text="${item.description}">
-            </li>
-        </ul>
-    </th:block>
-    <th:block th:if="${todos.empty}">
-        <div id="empty-todos-message">There are no todo items</div>
-    </th:block>
+<div class="bg-white overflow-hidden border-t border-l border-r border-gray-400 p-4 px-3 py-10 bg-gray-200 flex justify-center">
+    <div class="w-full max-w-xs">
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <h1 class="text-2xl text-gray-500 mb-3">TODO list</h1>
+            <th:block th:if="${todos.size() > 0}">
+                <ul id="todo-items-list" class="list-disc pl-6">
+                    <li th:each="item : ${todos}" th:text="${item.description}" class="my-2">
+                    </li>
+                </ul>
+            </th:block>
+            <th:block th:if="${todos.empty}">
+                <div id="empty-todos-message">There are no todo items</div>
+            </th:block>
+        </div>
+    </div>
 </div>
 </body>
 </html>
