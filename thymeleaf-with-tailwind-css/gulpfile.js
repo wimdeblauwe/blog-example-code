@@ -5,6 +5,7 @@ const browserSync = require('browser-sync').create();
 const environments = require('gulp-environments');
 const uglifycss = require('gulp-uglifycss');
 const terser = require('gulp-terser');
+const postcss = require('gulp-postcss');
 
 const production = environments.production;
 
@@ -25,6 +26,10 @@ gulp.task('copy-html', () =>
 
 gulp.task('copy-css', () =>
     gulp.src(['src/main/resources/**/*.css'])
+        .pipe(postcss([
+            require('tailwindcss'),
+            require('autoprefixer'),
+        ]))
         .pipe(production(uglifycss()))
         .pipe(gulp.dest('target/classes/'))
 );
