@@ -1,0 +1,34 @@
+= Using Tailwind CSS with Spring Boot and Thymeleaf
+
+== General
+
+Source code for the blog post https://www.wimdeblauwe.com/blog/2020/02/17/using-tailwind-css-with-spring-boot-and-thymeleaf/[Using Tailwind CSS with Spring Boot and Thymeleaf]
+
+Technologies used:
+
+* Java 11
+* Spring Boot 2.2.4
+* Thymeleaf 3.0.11
+* Tailwind CSS 1.2.0
+* NPM 6.13.4
+* Gulp 4.0.2
+
+== Building
+
+Run:
+[source]
+----
+gulp build
+----
+
+NOTE: Run `npm install gulp` first if you don't have it yet.
+
+Run:
+[source]
+----
+mvn package
+----
+
+== Running
+
+Run from IntelliJ IDEA or use `mvn spring-boot:run`
