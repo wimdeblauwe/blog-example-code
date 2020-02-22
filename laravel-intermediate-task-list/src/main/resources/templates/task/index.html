@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/app}">
+<body>
+<div layout:fragment="content">
+    <div class="panel-body">
+
+        <!-- New Task Form -->
+        <form th:action="@{/tasks}" method="POST" class="form-horizontal">
+
+            <!-- Task Name -->
+            <div class="form-group">
+                <label for="task-name" class="col-sm-3 control-label">Task</label>
+
+                <div class="col-sm-6">
+                    <input type="text" name="name" id="task-name" class="form-control">
+                </div>
+            </div>
+
+            <!-- Add Task Button -->
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-6">
+                    <button type="submit" class="btn btn-default">
+                        <i class="fa fa-plus"></i> Add Task
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- TODO: Current Tasks -->
+</div>
+</body>
+</html>
