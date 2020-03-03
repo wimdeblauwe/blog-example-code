@@ -1,0 +1,22 @@
+= UUID based Value Objects with Spring Boot REST API
+
+== General
+
+Source code for the blog post https://www.wimdeblauwe.com/blog/2020/03/03/uuid-based-value-objects-with-spring-boot-rest-api/[Value Objects with Spring Boot REST API]
+
+Technologies used:
+
+* Java 11
+* Spring Boot 2.2.4
+
+== Building
+
+Run:
+[source]
+----
+mvn package
+----
+
+== Running
+
+Run from IntelliJ IDEA or use `mvn spring-boot:run`
