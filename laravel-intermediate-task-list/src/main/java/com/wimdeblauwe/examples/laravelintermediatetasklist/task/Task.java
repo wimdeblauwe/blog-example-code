@@ -17,9 +17,10 @@ public class Task {
 
     }
 
-    public Task(Integer id, String name) {
+    public Task(Integer id, String name, User user) {
         this.id = id;
         this.name = name;
+        this.user = user;
     }
 
     public Integer getId() {
