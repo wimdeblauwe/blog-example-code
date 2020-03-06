@@ -8,14 +8,16 @@
     <div class="panel-body">
 
         <!-- New Task Form -->
-        <form th:action="@{/tasks}" method="POST" class="form-horizontal">
+        <form th:action="@{/tasks}" method="POST" class="form-horizontal" th:object="${createTaskParameters}">
+
+            <div th:replace="fragments/messages :: fieldErrors"></div>
 
             <!-- Task Name -->
             <div class="form-group">
                 <label for="task-name" class="col-sm-3 control-label">Task</label>
 
                 <div class="col-sm-6">
-                    <input type="text" name="name" id="task-name" class="form-control">
+                    <input type="text" th:field="*{name}" class="form-control">
                 </div>
             </div>
 
