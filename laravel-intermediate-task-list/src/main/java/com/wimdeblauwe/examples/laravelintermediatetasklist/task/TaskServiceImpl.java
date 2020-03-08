@@ -6,6 +6,8 @@ import com.wimdeblauwe.examples.laravelintermediatetasklist.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class TaskServiceImpl implements TaskService {
@@ -22,5 +24,13 @@ public class TaskServiceImpl implements TaskService {
         User user = userService.getUser(userId)
                                .orElseThrow(() -> new UserNotFoundException("Could not find user with id " + userId));
         return repository.save(new Task(null, name, user));
+    }
+
+    @Override
+    public List<Task> getTasksByUser(int userId) {
+        User user = userService.getUser(userId)
+                               .orElseThrow(() -> new UserNotFoundException("Could not find user with id " + userId));
+
+        return repository.findByUser(user);
     }
 }

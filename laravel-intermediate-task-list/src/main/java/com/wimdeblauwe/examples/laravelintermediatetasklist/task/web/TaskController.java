@@ -20,8 +20,11 @@ public class TaskController {
     }
 
     @GetMapping
-    public String index(Model model) {
+    public String index(@AuthenticationPrincipal ApplicationUserDetails userDetails,
+                        Model model) {
+
         model.addAttribute("createTaskParameters", new CreateTaskParameters());
+        model.addAttribute("tasks", service.getTasksByUser(userDetails.getId()));
         return "task/index";
     }
 

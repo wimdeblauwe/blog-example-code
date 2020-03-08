@@ -30,6 +30,40 @@
                 </div>
             </div>
         </form>
+
+        <!-- Current tasks -->
+        <th:block th:if="${#lists.size(tasks) > 0}">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Current Tasks
+                </div>
+
+                <div class="panel-body">
+                    <table class="table table-striped task-table">
+
+                        <!-- Table Headings -->
+                        <thead>
+                        <th>Task</th>
+                        <th>&nbsp;</th>
+                        </thead>
+
+                        <!-- Table Body -->
+                        <tbody>
+                        <tr th:each="task : ${tasks}">
+                            <!-- Task Name -->
+                            <td class="table-text">
+                                <div th:text="${task.name}"></div>
+                            </td>
+
+                            <td>
+                                <!-- TODO: Delete Button -->
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </th:block>
     </div>
 
     <!-- TODO: Current Tasks -->
