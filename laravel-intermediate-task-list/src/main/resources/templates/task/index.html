@@ -55,8 +55,14 @@
                                 <div th:text="${task.name}"></div>
                             </td>
 
+                            <!-- Delete Button -->
                             <td>
-                                <!-- TODO: Delete Button -->
+                                <form th:action="@{/tasks/{id}(id=${task.id})}" th:method="DELETE">
+
+                                    <button type="submit" th:id="${'delete-task-' + task.id}" class="btn btn-danger">
+                                        <i class="fa fa-btn fa-trash"></i>Delete
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         </tbody>

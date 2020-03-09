@@ -2,6 +2,7 @@ package com.wimdeblauwe.examples.laravelintermediatetasklist.task.web;
 
 import com.wimdeblauwe.examples.laravelintermediatetasklist.infrastructure.security.ApplicationUserDetails;
 import com.wimdeblauwe.examples.laravelintermediatetasklist.task.TaskService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,7 +44,11 @@ public class TaskController {
     }
 
     @DeleteMapping("/{taskId}")
-    public String destroy(@PathVariable Integer taskId) {
-        return null;
+    @PreAuthorize("@taskServiceImpl.getTask(#taskId).orElse(null)?.user.id == #userDetails.id")
+    public String destroy(@AuthenticationPrincipal ApplicationUserDetails userDetails,
+                          @PathVariable("taskId") Integer taskId) {
+
+        service.deleteTask(taskId);
+        return "redirect:/tasks";
     }
 }

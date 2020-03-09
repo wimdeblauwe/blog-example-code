@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -32,5 +33,15 @@ public class TaskServiceImpl implements TaskService {
                                .orElseThrow(() -> new UserNotFoundException("Could not find user with id " + userId));
 
         return repository.findByUser(user);
+    }
+
+    @Override
+    public Optional<Task> getTask(int taskId) {
+        return repository.findById(taskId);
+    }
+
+    @Override
+    public void deleteTask(Integer taskId) {
+        repository.deleteById(taskId);
     }
 }
