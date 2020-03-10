@@ -1,0 +1,10 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="fieldErrors" class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+    <p><span>There was a problem creating the task:</span></p>
+    <ul>
+        <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+    </ul>
+</div>
+</body>
+</html>
