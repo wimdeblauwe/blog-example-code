@@ -1,5 +1,5 @@
 = Example code Blog wimdeblauwe.wordpress.com
 
-This repository has the example code for blog posts on https://wimdeblauwe.wordpress.com.
+This repository has the example code for blog posts on https://www.wimdeblauwe.com.
 
 Each directory has a `README.adoc` detailing more about the example and a link to the corresponding blog post.
