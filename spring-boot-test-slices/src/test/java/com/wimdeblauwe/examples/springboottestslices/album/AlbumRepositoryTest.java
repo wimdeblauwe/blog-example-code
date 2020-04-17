@@ -1,23 +1,12 @@
 package com.wimdeblauwe.examples.springboottestslices.album;
 
-import org.junit.jupiter.api.Tag;
+import com.wimdeblauwe.examples.springboottestslices.infrastructure.test.MyAppDataJpaTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.ActiveProfiles;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Tag("db-test")
-@ActiveProfiles("data-jpa-test")
+@MyAppDataJpaTest
 class AlbumRepositoryTest {
 
     private final AlbumRepository repository;
@@ -34,13 +23,5 @@ class AlbumRepositoryTest {
                          .extracting(Album::getId)
                          .isInstanceOfSatisfying(Long.class,
                                                  id -> assertThat(id).isPositive());
-    }
-
-    @TestConfiguration
-    static class TestConfig {
-        @Bean
-        public ExecutorService executorService() {
-            return Executors.newSingleThreadExecutor();
-        }
     }
 }
