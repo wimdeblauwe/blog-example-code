@@ -1,0 +1,22 @@
+= Spring Boot test slices with custom annotations
+
+== General
+
+Source code for the blog post https://www.wimdeblauwe.com/blog/2020/04/17/spring-boot-test-slices-with-custom-annotations/[Spring Boot test slices with custom annotations]
+
+Technologies used:
+
+* Java 11
+* Spring Boot 2.2.6
+
+== Building
+
+Run:
+[source]
+----
+mvn package
+----
+
+== Running
+
+Run from IntelliJ IDEA or use `mvn spring-boot:run`
