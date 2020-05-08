@@ -1,0 +1,18 @@
+= AssertJ test cause of exception
+
+== General
+
+Source code for the blog post https://www.wimdeblauwe.com/blog/2020/05/08/assertj-test-cause-of-exception/[AssertJ test cause of exception]
+
+Technologies used:
+
+* Java 11
+* Spring Boot 2.2.7
+
+== Running
+
+Run:
+[source]
+----
+mvn test
+----
