@@ -6,9 +6,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "cypress": "^3.8.3",
-    "cypress-multi-reporters": "^1.2.3",
-    "mocha": "^7.0.1",
-    "mochawesome": "^4.1.0"
+    "cypress": "^4.5.0",
+    "cypress-multi-reporters": "^1.2.4",
+    "mocha": "^7.1.2",
+    "mochawesome": "^5.0.0"
   }
 }
