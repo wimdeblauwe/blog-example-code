@@ -1,0 +1,14 @@
+= Dayinfo API Documentation
+
+To get information on the current season, use a `GET` on `/api/dayinfo`.
+
+include::{snippets}/get-dayinfo-example/http-request.adoc[]
+
+Example response:
+
+include::{snippets}/get-dayinfo-example/http-response.adoc[]
+
+Details of the response fields:
+
+[cols="20,20,60"]
+include::{snippets}/get-dayinfo-example/response-fields.adoc[]

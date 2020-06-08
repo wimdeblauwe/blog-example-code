@@ -1,0 +1,11 @@
+= Generate all enum values for Spring REST Docs documentation
+
+== General
+
+Source code for the blog post https://www.wimdeblauwe.com/blog/2020/06/08/generate-enum-values-spring-rest-docs/[Generate all enum values for Spring REST Docs documentation]
+
+Technologies used:
+
+* Java 11
+* Spring Boot 2.3.0
+
