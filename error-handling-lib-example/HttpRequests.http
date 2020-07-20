@@ -1,0 +1,4 @@
+GET http://localhost:8080/api/info-requests/1
+Accept: application/json
+
+###
