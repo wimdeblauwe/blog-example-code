@@ -1,0 +1,18 @@
+= Error handling library for Spring Boot
+
+== General
+
+Source code for the blog post https://www.wimdeblauwe.com/blog/2020/07/20/error-handling-library-spring-boot/[Error handling library for Spring Boot] about the https://github.com/wimdeblauwe/error-handling-spring-boot-starter[Error Handling Spring Boot Starter] library.
+
+Technologies used:
+
+* Java 11
+* Spring Boot 2.3.1
+
+== Running
+
+Run:
+[source]
+----
+mvn test
+----
