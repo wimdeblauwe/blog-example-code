@@ -11,7 +11,7 @@
 
     <ul>
         <li th:each="user : ${users}"
-            th:text="|${user.givenName} ${user.familyName}|">
+            th:text="|${user.id} - ${user.givenName} ${user.familyName}|">
         </li>
     </ul>
 </main>
