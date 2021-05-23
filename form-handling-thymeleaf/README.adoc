@@ -1,0 +1,23 @@
+= Form handling with Thymeleaf
+
+== General
+
+Source code for the blog post https://www.wimdeblauwe.com/blog/2021/05/23/form-handling-with-thymeleaf/[Form handling with Thymeleaf]
+
+Technologies used:
+
+* Java 11
+* Spring Boot 2.5.0
+* Thymeleaf 3.0.12
+
+== Building
+
+Run:
+[source]
+----
+mvn package
+----
+
+== Running
+
+Run from IntelliJ IDEA or use `mvn spring-boot:run`
