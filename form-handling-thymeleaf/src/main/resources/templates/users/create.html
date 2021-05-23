@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+<main>
+    <h1>Create user</h1>
+    <form th:object="${formData}"
+          th:action="@{/users/create}"
+          method="post">
+        <div>
+            <label for="givenName">Given name</label>
+            <input id="givenName" type="text"
+                   th:field="*{givenName}">
+            <p th:if="${#fields.hasErrors('givenName')}"
+               th:text="${#strings.listJoin(#fields.errors('givenName'), ', ')}"></p>
+        </div>
+        <div>
+            <label for="familyName">Family name</label>
+            <input id="familyName" type="text"
+                   th:field="*{familyName}">
+            <p th:if="${#fields.hasErrors('familyName')}"
+               th:text="${#strings.listJoin(#fields.errors('familyName'), ', ')}"></p>
+        </div>
+        <button type="submit">Create user</button>
+    </form>
+</main>
+
+</body>
+</html>
