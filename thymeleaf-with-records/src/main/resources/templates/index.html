@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thymeleaf with Records</title>
+</head>
+<body>
+<div>
+    <h1>Property access</h1>
+    <div th:text="${person.givenName}"></div>
+    <div th:text="${person.familyName}"></div>
+    <h1>Method calls</h1>
+    <div th:text="${person.givenName()}"></div>
+    <div th:text="${person.familyName()}"></div>
+</div>
+</body>
+</html>
