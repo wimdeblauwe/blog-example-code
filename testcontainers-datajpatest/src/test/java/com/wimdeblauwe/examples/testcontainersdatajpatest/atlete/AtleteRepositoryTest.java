@@ -1,12 +1,9 @@
-package com.wimdeblauwe.examples.testcontainersdatajpatest;
+package com.wimdeblauwe.examples.testcontainersdatajpatest.atlete;
 
-import com.wimdeblauwe.examples.testcontainersdatajpatest.atlete.Atlete;
-import com.wimdeblauwe.examples.testcontainersdatajpatest.atlete.AtleteRepository;
-import com.wimdeblauwe.examples.testcontainersdatajpatest.team.Team;
-import com.wimdeblauwe.examples.testcontainersdatajpatest.team.TeamRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -15,9 +12,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Testcontainers
-class TestcontainersDatajpatestApplicationTests {
+public class AtleteRepositoryTest {
     @Container
     private static final PostgreSQLContainer<?> CONTAINER = new PostgreSQLContainer<>("postgres:11");
 
@@ -29,17 +27,12 @@ class TestcontainersDatajpatestApplicationTests {
     }
 
     @Autowired
-    private AtleteRepository atleteRepository;
-    @Autowired
-    private TeamRepository teamRepository;
+    private AtleteRepository repository;
 
     @Test
-    void contextLoads() {
-        atleteRepository.save(new Atlete("Wout Van Aert", 0, 1, 0));
-        assertThat(atleteRepository.count()).isEqualTo(1);
+    void testSave() {
+        repository.save(new Atlete("Wout Van Aert", 0, 1, 0));
 
-        teamRepository.save(new Team("Team Belgium"));
-        assertThat(teamRepository.count()).isEqualTo(1);
+        assertThat(repository.count()).isEqualTo(1);
     }
-
 }
