@@ -8,11 +8,24 @@ import com.wimdeblauwe.examples.testcontainersdatajpatest.team.TeamRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class TestcontainersDatajpatestApplicationTests extends DatabaseBaseTest {
+
+    @DynamicPropertySource
+    static void registerProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", () -> {
+            String jdbcUrl = CONTAINER.getJdbcUrl();
+            System.out.println("jdbcUrl = " + jdbcUrl);
+            return jdbcUrl;
+        });
+        registry.add("spring.datasource.username", CONTAINER::getUsername);
+        registry.add("spring.datasource.password", CONTAINER::getPassword);
+    }
 
     @Autowired
     private AtleteRepository atleteRepository;
