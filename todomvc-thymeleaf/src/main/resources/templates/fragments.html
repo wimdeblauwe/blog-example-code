@@ -10,7 +10,9 @@
                    th:attrappend="checked=${item.completed?'true':null}">
             <label th:text="${item.title}">Taste JavaScript</label>
         </form>
-        <button class="destroy"></button>
+        <form th:action="@{/{id}(id=${item.id})}" th:method="delete">
+            <button class="destroy"></button>
+        </form>
     </div>
     <input class="edit" value="Create a TodoMVC template">
 </li>

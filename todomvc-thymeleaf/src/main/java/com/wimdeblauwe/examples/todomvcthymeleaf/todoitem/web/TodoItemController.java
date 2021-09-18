@@ -46,6 +46,13 @@ public class TodoItemController {
         return "redirect:/";
     }
 
+    @DeleteMapping("/{id}")
+    public String deleteTodoItem(@PathVariable("id") Long id) {
+        repository.deleteById(id);
+
+        return "redirect:/";
+    }
+
     private List<TodoItemDto> getTodoItems() {
         return repository.findAll()
                          .stream()
