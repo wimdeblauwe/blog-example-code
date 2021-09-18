@@ -2,13 +2,14 @@
       xmlns:th="http://www.thymeleaf.org"
       lang="en">
 <!--/*@thymesVar id="item" type="com.wimdeblauwe.examples.todomvcthymeleaf.todoitem.web.TodoItemController.TodoItemDto"*/-->
-<li th:fragment="todoItem(item)">
+<li th:fragment="todoItem(item)" th:classappend="${item.completed?'completed':''}">
     <div class="view">
-        <form th:action="@{/classic/{id}/toggle(id=${item.id})}" th:method="put">
+        <form th:action="@{/{id}/toggle(id=${item.id})}" th:method="put">
             <input class="toggle" type="checkbox"
-                   onchange="this.form.submit()">
+                   onchange="this.form.submit()"
+                   th:attrappend="checked=${item.completed?'true':null}">
+            <label th:text="${item.title}">Taste JavaScript</label>
         </form>
-        <label th:text="${item.title}">Taste JavaScript</label>
         <button class="destroy"></button>
     </div>
     <input class="edit" value="Create a TodoMVC template">
