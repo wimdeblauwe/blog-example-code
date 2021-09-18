@@ -4,7 +4,10 @@
 <!--/*@thymesVar id="item" type="com.wimdeblauwe.examples.todomvcthymeleaf.todoitem.web.TodoItemController.TodoItemDto"*/-->
 <li th:fragment="todoItem(item)">
     <div class="view">
-        <input class="toggle" type="checkbox">
+        <form th:action="@{/classic/{id}/toggle(id=${item.id})}" th:method="put">
+            <input class="toggle" type="checkbox"
+                   onchange="this.form.submit()">
+        </form>
         <label th:text="${item.title}">Taste JavaScript</label>
         <button class="destroy"></button>
     </div>

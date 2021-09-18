@@ -1,13 +1,11 @@
 package com.wimdeblauwe.examples.todomvcthymeleaf.todoitem.web;
 
 import com.wimdeblauwe.examples.todomvcthymeleaf.todoitem.TodoItem;
+import com.wimdeblauwe.examples.todomvcthymeleaf.todoitem.TodoItemNotFoundException;
 import com.wimdeblauwe.examples.todomvcthymeleaf.todoitem.TodoItemRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -35,6 +33,16 @@ public class TodoItemController {
     public String addNewTodoItem(@Valid @ModelAttribute("item") TodoItemFormData formData) {
         repository.save(new TodoItem(formData.getTitle(), false));
 
+        return "redirect:/";
+    }
+
+    @PutMapping("/{id}/toggle")
+    public String toggleSelection(@PathVariable("id") Long id) {
+        TodoItem todoItem = repository.findById(id)
+                                      .orElseThrow(() -> new TodoItemNotFoundException(id));
+
+        todoItem.setCompleted(!todoItem.isCompleted());
+        repository.save(todoItem);
         return "redirect:/";
     }
 
