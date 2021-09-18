@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<main>
+    <h1>Without fragment</h1>
+    <ul>
+        <li th:each="user : ${users}">
+            <div th:text="${user.name}"></div>
+            <div th:text="${user.country}"></div>
+        </li>
+    </ul>
+
+    <h1>With th:insert</h1>
+    <ul>
+        <li th:each="user : ${users}" th:insert="fragments :: userInfo(${user})">
+        </li>
+    </ul>
+
+<!--
+    Gives exception if you enable this part!
+    <h1>With th:replace</h1>
+    <ul>
+        <li th:each="user : ${users}" th:replace="fragments :: userInfoLi(user)">
+        </li>
+    </ul>
+-->
+
+    <h1>With th:insert and th:remove</h1>
+    <ul>
+        <li th:each="user : ${users}" th:insert="fragments :: userInfoLi(${user})" th:remove="tag">
+        </li>
+    </ul>
+
+    <h1>With th:block and th:insert</h1>
+    <ul>
+        <th:block th:each="user : ${users}">
+            <li th:insert="fragments :: userInfoLi(${user})">
+            </li>
+        </th:block>
+    </ul>
+
+    <h1>With th:block and th:replace</h1>
+    <ul>
+        <th:block th:each="user : ${users}">
+            <li th:replace="fragments :: userInfoLi(${user})">
+            </li>
+        </th:block>
+    </ul>
+
+
+
+</main>
+</html>

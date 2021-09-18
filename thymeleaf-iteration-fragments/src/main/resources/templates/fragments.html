@@ -1,0 +1,15 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<div th:fragment="userInfo(user)">
+    <!--/*@thymesVar id="user" type="com.wimdeblauwe.examples.thymeleafiterationfragments.IndexController.User"*/-->
+    <div th:text="${user.name}"></div>
+    <div th:text="${user.country}"></div>
+</div>
+
+<li th:fragment="userInfoLi(user)">
+    <!--/*@thymesVar id="user" type="com.wimdeblauwe.examples.thymeleafiterationfragments.IndexController.User"*/-->
+    <div th:text="${user.name}"></div>
+    <div th:text="${user.country}"></div>
+</li>
+</html>
