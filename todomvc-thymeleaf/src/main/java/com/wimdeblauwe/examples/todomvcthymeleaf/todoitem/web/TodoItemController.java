@@ -26,6 +26,7 @@ public class TodoItemController {
         model.addAttribute("item", new TodoItemFormData());
         model.addAttribute("todos", getTodoItems());
         model.addAttribute("totalNumberOfItems", repository.count());
+        model.addAttribute("numberOfActiveItems", getNumberOfActiveItems());
         return "index";
     }
 
@@ -60,6 +61,10 @@ public class TodoItemController {
                                                           todoItem.getTitle(),
                                                           todoItem.isCompleted()))
                          .collect(Collectors.toList());
+    }
+
+    private int getNumberOfActiveItems() {
+        return repository.countAllByCompleted(false);
     }
 
     public static record TodoItemDto(long id, String title, boolean completed) {
