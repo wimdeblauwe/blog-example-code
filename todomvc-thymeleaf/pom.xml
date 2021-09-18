@@ -15,6 +15,8 @@
 	<description>TodoMVC implementation with Thymeleaf</description>
 	<properties>
 		<java.version>16</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>

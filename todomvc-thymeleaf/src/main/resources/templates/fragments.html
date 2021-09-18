@@ -4,7 +4,7 @@
 <!--/*@thymesVar id="item" type="com.wimdeblauwe.examples.todomvcthymeleaf.todoitem.web.TodoItemController.TodoItemDto"*/-->
 <li th:fragment="todoItem(item)">
     <div class="view">
-        <input class="toggle" type="checkbox" checked>
+        <input class="toggle" type="checkbox">
         <label th:text="${item.title}">Taste JavaScript</label>
         <button class="destroy"></button>
     </div>
