@@ -69,7 +69,10 @@
             </li>
         </ul>
         <!-- Hidden if no completed items are left ↓ -->
-        <button class="clear-completed">Clear completed</button>
+        <form th:action="@{/completed}" th:method="delete"
+              th:if="${numberOfCompletedItems > 0}">
+            <button class="clear-completed">Clear completed</button>
+        </form>
     </footer>
 </section>
 <footer class="info">

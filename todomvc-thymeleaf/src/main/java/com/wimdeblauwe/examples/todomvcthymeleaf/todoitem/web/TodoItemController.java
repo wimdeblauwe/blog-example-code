@@ -46,6 +46,7 @@ public class TodoItemController {
         model.addAttribute("todos", getTodoItems(listFilter));
         model.addAttribute("totalNumberOfItems", repository.count());
         model.addAttribute("numberOfActiveItems", getNumberOfActiveItems());
+        model.addAttribute("numberOfCompletedItems", getNumberOfCompletedItems());
     }
 
     @PostMapping
@@ -72,6 +73,15 @@ public class TodoItemController {
         return "redirect:/";
     }
 
+    @DeleteMapping("/completed")
+    public String deleteCompletedItems() {
+        List<TodoItem> items = repository.findAllByCompleted(true);
+        for (TodoItem item : items) {
+            repository.deleteById(item.getId());
+        }
+        return "redirect:/";
+    }
+
     private List<TodoItemDto> getTodoItems(ListFilter filter) {
         return switch (filter) {
             case ALL -> convertToDto(repository.findAll());
@@ -91,6 +101,10 @@ public class TodoItemController {
 
     private int getNumberOfActiveItems() {
         return repository.countAllByCompleted(false);
+    }
+
+    private int getNumberOfCompletedItems() {
+        return repository.countAllByCompleted(true);
     }
 
     public static record TodoItemDto(long id, String title, boolean completed) {
