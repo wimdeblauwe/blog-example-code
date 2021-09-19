@@ -66,6 +66,16 @@ public class TodoItemController {
         return "redirect:/";
     }
 
+    @PutMapping("/toggle-all")
+    public String toggleAll() {
+        List<TodoItem> todoItems = repository.findAll();
+        for (TodoItem todoItem : todoItems) {
+            todoItem.setCompleted(!todoItem.isCompleted());
+            repository.save(todoItem);
+        }
+        return "redirect:/";
+    }
+
     @DeleteMapping("/{id}")
     public String deleteTodoItem(@PathVariable("id") Long id) {
         repository.deleteById(id);

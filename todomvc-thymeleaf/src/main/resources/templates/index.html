@@ -20,8 +20,11 @@
     </header>
     <!-- This section should be hidden by default and shown when there are todos -->
     <section class="main" th:if="${totalNumberOfItems > 0}">
-        <input id="toggle-all" class="toggle-all" type="checkbox">
-        <label for="toggle-all">Mark all as complete</label>
+        <form th:action="@{/toggle-all}" th:method="put">
+            <input id="toggle-all" class="toggle-all" type="checkbox"
+                   onclick="this.form.submit()">
+            <label for="toggle-all">Mark all as complete</label>
+        </form>
         <ul class="todo-list" th:remove="all-but-first">
             <li th:insert="fragments :: todoItem(${item})" th:each="item : ${todos}" th:remove="tag">
             </li>
