@@ -54,16 +54,18 @@
         <th:block th:if="${numberOfActiveItems == 1}">
             <span class="todo-count"><strong>1</strong> item left</span>
         </th:block>
-        <!-- Remove this if you don't implement routing -->
         <ul class="filters">
             <li>
-                <a class="selected" href="#/">All</a>
+                <a th:href="@{/}"
+                   th:classappend="${filter.name() == 'ALL'?'selected':''}">All</a>
             </li>
             <li>
-                <a href="#/active">Active</a>
+                <a th:href="@{/active}"
+                   th:classappend="${filter.name() == 'ACTIVE'?'selected':''}">Active</a>
             </li>
             <li>
-                <a href="#/completed">Completed</a>
+                <a th:href="@{/completed}"
+                   th:classappend="${filter.name() == 'COMPLETED'?'selected':''}">Completed</a>
             </li>
         </ul>
         <!-- Hidden if no completed items are left ↓ -->

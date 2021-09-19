@@ -23,11 +23,29 @@ public class TodoItemController {
 
     @GetMapping
     public String index(Model model) {
+        addAttributesForIndex(model, ListFilter.ALL);
+        return "index";
+    }
+
+    @GetMapping("/active")
+    public String indexActive(Model model) {
+        addAttributesForIndex(model, ListFilter.ACTIVE);
+        return "index";
+    }
+
+    @GetMapping("/completed")
+    public String indexCompleted(Model model) {
+        addAttributesForIndex(model, ListFilter.COMPLETED);
+        return "index";
+    }
+
+    private void addAttributesForIndex(Model model,
+                                       ListFilter listFilter) {
         model.addAttribute("item", new TodoItemFormData());
-        model.addAttribute("todos", getTodoItems());
+        model.addAttribute("filter", listFilter);
+        model.addAttribute("todos", getTodoItems(listFilter));
         model.addAttribute("totalNumberOfItems", repository.count());
         model.addAttribute("numberOfActiveItems", getNumberOfActiveItems());
-        return "index";
     }
 
     @PostMapping
@@ -54,13 +72,21 @@ public class TodoItemController {
         return "redirect:/";
     }
 
-    private List<TodoItemDto> getTodoItems() {
-        return repository.findAll()
-                         .stream()
-                         .map(todoItem -> new TodoItemDto(todoItem.getId(),
-                                                          todoItem.getTitle(),
-                                                          todoItem.isCompleted()))
-                         .collect(Collectors.toList());
+    private List<TodoItemDto> getTodoItems(ListFilter filter) {
+        return switch (filter) {
+            case ALL -> convertToDto(repository.findAll());
+            case ACTIVE -> convertToDto(repository.findAllByCompleted(false));
+            case COMPLETED -> convertToDto(repository.findAllByCompleted(true));
+        };
+    }
+
+    private List<TodoItemDto> convertToDto(List<TodoItem> todoItems) {
+        return todoItems
+                .stream()
+                .map(todoItem -> new TodoItemDto(todoItem.getId(),
+                                                 todoItem.getTitle(),
+                                                 todoItem.isCompleted()))
+                .collect(Collectors.toList());
     }
 
     private int getNumberOfActiveItems() {
@@ -68,5 +94,11 @@ public class TodoItemController {
     }
 
     public static record TodoItemDto(long id, String title, boolean completed) {
+    }
+
+    public enum ListFilter {
+        ALL,
+        ACTIVE,
+        COMPLETED
     }
 }
