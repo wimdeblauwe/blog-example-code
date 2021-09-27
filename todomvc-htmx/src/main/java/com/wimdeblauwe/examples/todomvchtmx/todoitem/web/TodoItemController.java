@@ -39,16 +39,6 @@ public class TodoItemController {
         return "index";
     }
 
-    private void addAttributesForIndex(Model model,
-                                       ListFilter listFilter) {
-        model.addAttribute("item", new TodoItemFormData());
-        model.addAttribute("filter", listFilter);
-        model.addAttribute("todos", getTodoItems(listFilter));
-        model.addAttribute("totalNumberOfItems", repository.count());
-        model.addAttribute("numberOfActiveItems", getNumberOfActiveItems());
-        model.addAttribute("numberOfCompletedItems", getNumberOfCompletedItems());
-    }
-
     @PostMapping
     public String addNewTodoItem(@Valid @ModelAttribute("item") TodoItemFormData formData) {
         repository.save(new TodoItem(formData.getTitle(), false));
@@ -92,6 +82,25 @@ public class TodoItemController {
         return "redirect:/";
     }
 
+    @PostMapping(headers = "HX-Request")
+    public String htmxAddTodoItem(TodoItemFormData formData,
+                                  Model model) {
+        TodoItem item = repository.save(new TodoItem(formData.getTitle(), false));
+        model.addAttribute("item", toDto(item));
+
+        return "fragments :: todoItem";
+    }
+
+    private void addAttributesForIndex(Model model,
+                                       ListFilter listFilter) {
+        model.addAttribute("item", new TodoItemFormData());
+        model.addAttribute("filter", listFilter);
+        model.addAttribute("todos", getTodoItems(listFilter));
+        model.addAttribute("totalNumberOfItems", repository.count());
+        model.addAttribute("numberOfActiveItems", getNumberOfActiveItems());
+        model.addAttribute("numberOfCompletedItems", getNumberOfCompletedItems());
+    }
+
     private List<TodoItemDto> getTodoItems(ListFilter filter) {
         return switch (filter) {
             case ALL -> convertToDto(repository.findAll());
@@ -103,10 +112,14 @@ public class TodoItemController {
     private List<TodoItemDto> convertToDto(List<TodoItem> todoItems) {
         return todoItems
                 .stream()
-                .map(todoItem -> new TodoItemDto(todoItem.getId(),
-                                                 todoItem.getTitle(),
-                                                 todoItem.isCompleted()))
+                .map(this::toDto)
                 .collect(Collectors.toList());
+    }
+
+    private TodoItemDto toDto(TodoItem todoItem) {
+        return new TodoItemDto(todoItem.getId(),
+                               todoItem.getTitle(),
+                               todoItem.isCompleted());
     }
 
     private int getNumberOfActiveItems() {

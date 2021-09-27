@@ -13,19 +13,26 @@
 <section class="todoapp">
     <header class="header">
         <h1>todos</h1>
-        <form th:action="@{/}" method="post" th:object="${item}">
-            <input class="new-todo" placeholder="What needs to be done?" autofocus
-                   th:field="*{title}">
-        </form>
+                <form id="new-todo-form" th:action="@{/}" method="post" th:object="${item}">
+                    <input id="new-todo-input" class="new-todo" placeholder="What needs to be done?" autofocus
+                           autocomplete="false"
+                           name="title"
+                           th:field="*{title}"
+                           hx-target="#todo-list"
+                           hx-swap="beforeend"
+                           hx-post="/"
+                           hx-trigger="keyup[key=='Enter']"
+                    >
+                </form>
     </header>
     <!-- This section should be hidden by default and shown when there are todos -->
-    <section class="main" th:if="${totalNumberOfItems > 0}">
+    <section id="main-section" class="main" th:classappend="${totalNumberOfItems == 0?'hidden':''}">
         <form th:action="@{/toggle-all}" th:method="put">
             <input id="toggle-all" class="toggle-all" type="checkbox"
                    onclick="this.form.submit()">
             <label for="toggle-all">Mark all as complete</label>
         </form>
-        <ul class="todo-list" th:remove="all-but-first">
+        <ul id="todo-list" class="todo-list" th:remove="all-but-first">
             <li th:insert="fragments :: todoItem(${item})" th:each="item : ${todos}" th:remove="tag">
             </li>
             <!-- These are here just to show the structure of the list items -->
@@ -49,7 +56,7 @@
         </ul>
     </section>
     <!-- This footer should be hidden by default and shown when there are todos -->
-    <footer class="footer" th:if="${totalNumberOfItems > 0}">
+    <footer id="main-footer" class="footer" th:classappend="${totalNumberOfItems == 0?'hidden':''}">
         <!-- This should be `0 items left` by default -->
         <th:block th:unless="${numberOfActiveItems == 1}">
             <span class="todo-count"><strong th:text="${numberOfActiveItems}">0</strong> items left</span>
@@ -88,5 +95,29 @@
 </footer>
 <!-- Scripts here. Don't remove ↓ -->
 <script th:src="@{/webjars/todomvc-common/base.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
+<script>
+    htmx.on('#new-todo-input', 'htmx:afterRequest', function (evt) {
+        evt.detail.elt.value = '';
+    });
+
+    htmx.on('htmx:afterSwap', function (evt) {
+        let items = document.querySelectorAll('#todo-list li');
+        let mainSection = document.getElementById('main-section');
+        let mainFooter = document.getElementById('main-footer');
+
+        if (items.length > 0) {
+            mainSection.classList.remove('hidden');
+            mainFooter.classList.remove('hidden');
+        } else {
+            mainSection.classList.add('hidden');
+            mainFooter.classList.add('hidden');
+        }
+    });
+
+    document.getElementById('new-todo-form').addEventListener('submit', function (evt) {
+        evt.preventDefault();
+    })
+</script>
 </body>
 </html>
