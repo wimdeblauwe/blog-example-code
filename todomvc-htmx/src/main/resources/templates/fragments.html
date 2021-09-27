@@ -16,4 +16,16 @@
     </div>
     <input class="edit" value="Create a TodoMVC template">
 </li>
+<span th:fragment="active-items-count"
+      id="active-items-count"
+      class="todo-count"
+      hx-get="/active-items-count"
+      hx-trigger="itemAdded from:body">
+        <th:block th:unless="${numberOfActiveItems == 1}">
+            <span class="todo-count"><strong th:text="${numberOfActiveItems}">0</strong> items left</span>
+        </th:block>
+        <th:block th:if="${numberOfActiveItems == 1}">
+            <span class="todo-count"><strong>1</strong> item left</span>
+        </th:block>
+</span>
 </html>
