@@ -11,9 +11,11 @@
                hx-swap="outerHTML"
         >
         <label th:text="${item.title}">Taste JavaScript</label>
-        <form th:action="@{/{id}(id=${item.id})}" th:method="delete">
-            <button class="destroy"></button>
-        </form>
+        <button class="destroy"
+                th:attr="hx-delete=@{/{id}(id=${item.id})},hx-target=|#list-item-${item.id}|"
+                hx-trigger="click"
+                hx-swap="outerHTML"
+        ></button>
     </div>
     <input class="edit" value="Create a TodoMVC template">
 </li>
@@ -21,7 +23,7 @@
       id="active-items-count"
       class="todo-count"
       hx-get="/active-items-count"
-      hx-trigger="itemAdded from:body, itemCompletionToggled from:body">
+      hx-trigger="itemAdded from:body, itemCompletionToggled from:body, itemDeleted from:body">
         <th:block th:unless="${numberOfActiveItems == 1}">
             <span class="todo-count"><strong th:text="${numberOfActiveItems}">0</strong> items left</span>
         </th:block>

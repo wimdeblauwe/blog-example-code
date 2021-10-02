@@ -110,6 +110,16 @@ public class TodoItemController {
         return "fragments :: todoItem";
     }
 
+    @DeleteMapping(value = "/{id}", headers = "HX-Request")
+    @ResponseBody
+    public String htmxDeleteTodoItem(@PathVariable("id") Long id,
+                                     HttpServletResponse response) {
+        repository.deleteById(id);
+
+        response.setHeader("HX-Trigger", "itemDeleted");
+        return "";
+    }
+
     @GetMapping(value = "/active-items-count", headers = "HX-Request")
     public String htmxActiveItemsCount(Model model) {
         model.addAttribute("numberOfActiveItems", getNumberOfActiveItems());
