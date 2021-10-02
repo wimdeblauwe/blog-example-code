@@ -94,6 +94,22 @@ public class TodoItemController {
         return "fragments :: todoItem";
     }
 
+    @PutMapping(value = "/{id}/toggle", headers = "HX-Request")
+    public String htmxToggleTodoItem(@PathVariable("id") Long id,
+                                     Model model,
+                                     HttpServletResponse response) {
+        TodoItem todoItem = repository.findById(id)
+                                      .orElseThrow(() -> new TodoItemNotFoundException(id));
+
+        todoItem.setCompleted(!todoItem.isCompleted());
+        repository.save(todoItem);
+
+        model.addAttribute("item", toDto(todoItem));
+
+        response.setHeader("HX-Trigger", "itemCompletionToggled");
+        return "fragments :: todoItem";
+    }
+
     @GetMapping(value = "/active-items-count", headers = "HX-Request")
     public String htmxActiveItemsCount(Model model) {
         model.addAttribute("numberOfActiveItems", getNumberOfActiveItems());
