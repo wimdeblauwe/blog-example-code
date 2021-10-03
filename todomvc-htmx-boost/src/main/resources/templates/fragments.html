@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<!--/*@thymesVar id="item" type="com.wimdeblauwe.examples.todomvchtmx.todoitem.web.TodoItemController.TodoItemDto"*/-->
+<li th:fragment="todoItem(item)" th:classappend="${item.completed?'completed':''}" th:id="|list-item-${item.id}|">
+    <div class="view">
+        <form th:id="|toggle-item-form-${item.id}|"
+                th:action="@{/{id}/toggle(id=${item.id})}" th:method="put">
+            <input th:id="|toggle-checkbox-${item.id}|"
+                    class="toggle" type="checkbox"
+                   onchange="this.form.requestSubmit()"
+                   th:attrappend="checked=${item.completed?'true':null}">
+            <label th:text="${item.title}">Taste JavaScript</label>
+        </form>
+        <form th:id="|delete-item-form-${item.id}|"
+                th:action="@{/{id}(id=${item.id})}"
+              th:method="delete">
+            <button class="destroy"></button>
+        </form>
+    </div>
+    <input class="edit" value="Create a TodoMVC template">
+</li>
+<span th:fragment="active-items-count"
+      id="active-items-count"
+      class="todo-count">
+        <th:block th:unless="${numberOfActiveItems == 1}">
+            <span class="todo-count"><strong th:text="${numberOfActiveItems}">0</strong> items left</span>
+        </th:block>
+        <th:block th:if="${numberOfActiveItems == 1}">
+            <span class="todo-count"><strong>1</strong> item left</span>
+        </th:block>
+</span>
+</html>
