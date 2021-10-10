@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/application.css">
+</head>
+<body>
+<h1>Server Sent Events Demo</h1>
+<div hx-sse="connect:/progress-events">
+    <button hx-post="/" hx-swap="none">Generate PDF</button>
+    <div style="margin-bottom: 2rem;"></div>
+    <div id="progress-wrapper" hx-sse="swap:message">
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
+</body>
+</html>
