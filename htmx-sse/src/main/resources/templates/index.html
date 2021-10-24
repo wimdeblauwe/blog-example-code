@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -7,6 +9,7 @@
 </head>
 <body>
 <h1>Server Sent Events Demo</h1>
+<div>Current user: <span sec:authentication="name"></span></div>
 <div hx-sse="connect:/progress-events">
     <button hx-post="/" hx-swap="none">Generate PDF</button>
     <div style="margin-bottom: 2rem;"></div>
