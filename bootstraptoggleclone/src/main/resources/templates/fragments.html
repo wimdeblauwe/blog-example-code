@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <body>
 <div th:fragment="form-checkbox(propertyName, title, description)"
-     class="flex items-center justify-between"
+     class="flex items-center justify-between overflow-hidden"
 >
     <span class="flex-grow flex flex-col">
         <span class="text-sm font-medium text-gray-900" th:id="|${propertyName}-label|"
@@ -14,14 +14,18 @@
     </span>
     <div x-data="{ open: $refs.hc.checked }"
          @click="open = !open"
-         class="cursor-pointer">
+         class="w-14 h-10 overflow-hidden flex items-center justify-start cursor-pointer">
         <input type="checkbox" th:field="*{__${propertyName}__}"
                x-model="open"
                x-ref="hc"
                class="hidden">
-        <div class="w-14 h-10 flex justify-center items-center"
-             x-text="open?'On':'Off'"
-             :class="open?'bg-blue-500 text-white':'bg-gray-300 text-black'">On
+        <div class="flex flex-none justify-start select-none">
+            <div class="w-14 h-10 flex justify-center items-center bg-blue-500 text-white hover:bg-blue-700"
+                 :class="open?'':'-translate-x-full'">On
+            </div>
+            <div class="w-14 h-10 flex justify-center items-center bg-gray-300 text-black hover:bg-gray-400"
+                 :class="open?'':'-translate-x-full'">Off
+            </div>
         </div>
     </div>
 </div>
