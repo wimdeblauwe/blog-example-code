@@ -2,15 +2,25 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:fragment="form-checkbox(propertyName, title, description)" class="flex items-center justify-between">
-            <span class="flex-grow flex flex-col">
-                <span class="text-sm font-medium text-gray-900" th:id="|${propertyName}-label|"
-                      th:text="${title}">Notify via email</span>
-                <span class="text-sm text-gray-500"
-                      th:id="|${propertyName}-description|"
-                      th:text="${description}">Get notified via email when something happens.</span>
-            </span>
-    <input type="checkbox" th:field="*{__${propertyName}__}">
+<div th:fragment="form-checkbox(propertyName, title, description)"
+     class="flex items-center justify-between"
+>
+    <span class="flex-grow flex flex-col">
+        <span class="text-sm font-medium text-gray-900" th:id="|${propertyName}-label|"
+              th:text="${title}">Notify via email</span>
+        <span class="text-sm text-gray-500"
+              th:id="|${propertyName}-description|"
+              th:text="${description}">Get notified via email when something happens.</span>
+    </span>
+    <div x-data="{ open: true }"
+         @click="open = !open"
+         class="cursor-pointer">
+        <input type="checkbox" th:field="*{__${propertyName}__}"
+               class="hidden">
+        <div class=""
+             x-text="open?'On':'Off'">On
+        </div>
+    </div>
 </div>
 <div th:fragment="form-buttons" class="pt-5">
     <div class="flex justify-end">
