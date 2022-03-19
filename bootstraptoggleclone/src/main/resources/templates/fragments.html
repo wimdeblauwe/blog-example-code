@@ -19,8 +19,9 @@
                x-model="open"
                x-ref="hc"
                class="hidden">
-        <div class=""
-             x-text="open?'On':'Off'">On
+        <div class="w-14 h-10 flex justify-center items-center"
+             x-text="open?'On':'Off'"
+             :class="open?'bg-blue-500 text-white':'bg-gray-300 text-black'">On
         </div>
     </div>
 </div>
