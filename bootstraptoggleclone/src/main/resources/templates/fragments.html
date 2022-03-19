@@ -12,10 +12,12 @@
               th:id="|${propertyName}-description|"
               th:text="${description}">Get notified via email when something happens.</span>
     </span>
-    <div x-data="{ open: true }"
+    <div x-data="{ open: $refs.hc.checked }"
          @click="open = !open"
          class="cursor-pointer">
         <input type="checkbox" th:field="*{__${propertyName}__}"
+               x-model="open"
+               x-ref="hc"
                class="hidden">
         <div class=""
              x-text="open?'On':'Off'">On
