@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>Bootstrap Toggle Clone</title>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="/css/application.css"/>
+</head>
+<body>
+<h1 class="mx-20 mt-5 text-xl text-blue-900">Settings</h1>
+<div class="mx-20 mt-5">
+    <form th:object="${settings}"
+          th:method="post"
+          th:action="@{/}"
+          class="space-y-4"
+    >
+        <div class="flex items-center justify-between">
+            <span class="flex-grow flex flex-col">
+                <span class="text-sm font-medium text-gray-900" id="notifyViaEmail-label">Notify via email</span>
+                <span class="text-sm text-gray-500"
+                      id="notifyViaEmail-description">Get notified via email when something happens.</span>
+            </span>
+            <input type="checkbox" th:field="*{notifyViaEmail}">
+        </div>
+        <div class="flex items-center justify-between">
+            <span class="flex-grow flex flex-col">
+                <span class="text-sm font-medium text-gray-900" id="notifyViaSms-label">Notify via SMS</span>
+                <span class="text-sm text-gray-500"
+                      id="notifyViaSms-description">Get notified via SMS when something happens.</span>
+            </span>
+            <input type="checkbox" th:field="*{notifyViaSms}">
+        </div>
+        <div class="pt-5">
+            <div class="flex justify-end">
+                <button type="button" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Cancel</button>
+                <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
