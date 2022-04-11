@@ -1,0 +1,15 @@
+GET localhost:8080/runtime
+
+###
+GET localhost:8080/bad-request
+
+###
+
+POST localhost:8080
+Content-Type: application/json
+
+{
+  "name": "",
+  "email": "invalid"
+}
+
