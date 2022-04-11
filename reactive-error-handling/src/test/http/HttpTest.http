@@ -1,7 +1,22 @@
-GET localhost:8080/runtime
+GET localhost:8080/users/1
 
 ###
 GET localhost:8080/bad-request
+
+###
+GET localhost:8080/matrix-variable
+
+###
+GET localhost:8080/path-variable
+
+###
+GET localhost:8080/request-cookie
+
+###
+GET localhost:8080/request-header
+
+###
+GET localhost:8080/missing-servlet-request-parameter
 
 ###
 
