@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="device-info(device)">
+    <h2 class="text-xl" th:text="${device.name}"></h2>
+    <div class="grid grid-cols-2 gap-4">
+        <div class="text-gray-700">Id:</div><div th:text="${device.id}"></div>
+        <div class="text-gray-700">Temperature:</div><div th:text="${#numbers.formatDecimal(device.temperature,1, 'DEFAULT', 2, 'DEFAULT')}">-</div>
+    </div>
+</div>
+</body>
+</html>

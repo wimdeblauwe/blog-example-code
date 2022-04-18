@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>HTMX IoT Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="container mx-auto max-w-md">
+<h1 class="text-2xl mt-5">htmx IoT Demo</h1>
+<ul class="list-disc ml-6 mt-3">
+    <li class="mb-1"><a class="hover:underline" th:href="@{/standard}">Standard</a></li>
+    <li class="mb-1"><a class="hover:underline" th:href="@{/onload}">On load</a></li>
+    <li class="mb-1"><a class="hover:underline" th:href="@{/refresh-button}">Refresh button</a></li>
+    <li class="mb-1"><a class="hover:underline" th:href="@{/auto-refresh}">Auto refresh</a></li>
+</ul>
+<script src="https://unpkg.com/htmx.org@1.7.0" integrity="sha384-EzBXYPt0/T6gxNp0nuPtLkmRpmDBbjg6WmCUZRLXBBwYYmwAUxzlSGej0ARHX0Bo" crossorigin="anonymous" defer></script>
+</body>
+</html>
