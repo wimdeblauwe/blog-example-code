@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>HTMX IoT Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .htmx-request .value-div {
+            display: none;
+        }
+
+        .value-div {
+            display: inline;
+        }
+
+    </style>
+</head>
+<body class="container mx-auto max-w-md">
+<h1 class="text-2xl mt-5">htmx IoT Demo - Refresh button</h1>
+<div th:each="device : ${devices}" class="mt-8">
+    <div th:replace="refreshbutton/partials :: device-info-with-load(${device})"></div>
+</div>
+<script src="https://unpkg.com/htmx.org@1.7.0"
+        integrity="sha384-EzBXYPt0/T6gxNp0nuPtLkmRpmDBbjg6WmCUZRLXBBwYYmwAUxzlSGej0ARHX0Bo" crossorigin="anonymous"
+        defer></script>
+</body>
+</html>
