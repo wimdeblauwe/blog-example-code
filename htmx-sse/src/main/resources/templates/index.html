@@ -10,12 +10,13 @@
 <body>
 <h1>Server Sent Events Demo</h1>
 <div>Current user: <span sec:authentication="name"></span></div>
-<div hx-sse="connect:/progress-events">
+<div hx-ext="sse" sse-connect="/progress-events">
     <button hx-post="/" hx-swap="none">Generate PDF</button>
     <div style="margin-bottom: 2rem;"></div>
-    <div id="progress-wrapper" hx-sse="swap:message">
+    <div id="progress-wrapper" sse-swap="message">
     </div>
 </div>
 <script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/htmx.org/dist/ext/sse.js}"></script>
 </body>
 </html>
