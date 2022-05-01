@@ -22,6 +22,7 @@
       id="active-items-count"
       class="todo-count"
       hx-get="/active-items-count"
+      hx-swap="outerHTML"
       hx-trigger="itemAdded from:body, itemCompletionToggled from:body, itemDeleted from:body">
         <th:block th:unless="${numberOfActiveItems == 1}">
             <span class="todo-count"><strong th:text="${numberOfActiveItems}">0</strong> items left</span>
