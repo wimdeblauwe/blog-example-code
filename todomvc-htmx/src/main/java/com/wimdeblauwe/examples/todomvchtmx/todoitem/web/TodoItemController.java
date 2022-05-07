@@ -3,11 +3,12 @@ package com.wimdeblauwe.examples.todomvchtmx.todoitem.web;
 import com.wimdeblauwe.examples.todomvchtmx.todoitem.TodoItem;
 import com.wimdeblauwe.examples.todomvchtmx.todoitem.TodoItemNotFoundException;
 import com.wimdeblauwe.examples.todomvchtmx.todoitem.TodoItemRepository;
+import io.github.wimdeblauwe.hsbt.mvc.HxRequest;
+import io.github.wimdeblauwe.hsbt.mvc.HxTrigger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -83,21 +84,22 @@ public class TodoItemController {
         return "redirect:/";
     }
 
-    @PostMapping(headers = "HX-Request")
+    @PostMapping
+    @HxRequest
+    @HxTrigger("itemAdded")
     public String htmxAddTodoItem(TodoItemFormData formData,
-                                  Model model,
-                                  HttpServletResponse response) {
+                                  Model model) {
         TodoItem item = repository.save(new TodoItem(formData.getTitle(), false));
         model.addAttribute("item", toDto(item));
 
-        response.setHeader("HX-Trigger", "itemAdded");
         return "fragments :: todoItem";
     }
 
-    @PutMapping(value = "/{id}/toggle", headers = "HX-Request")
+    @PutMapping("/{id}/toggle")
+    @HxRequest
+    @HxTrigger("itemCompletionToggled")
     public String htmxToggleTodoItem(@PathVariable("id") Long id,
-                                     Model model,
-                                     HttpServletResponse response) {
+                                     Model model) {
         TodoItem todoItem = repository.findById(id)
                                       .orElseThrow(() -> new TodoItemNotFoundException(id));
 
@@ -106,21 +108,21 @@ public class TodoItemController {
 
         model.addAttribute("item", toDto(todoItem));
 
-        response.setHeader("HX-Trigger", "itemCompletionToggled");
         return "fragments :: todoItem";
     }
 
-    @DeleteMapping(value = "/{id}", headers = "HX-Request")
+    @DeleteMapping("/{id}")
+    @HxRequest
+    @HxTrigger("itemDeleted")
     @ResponseBody
-    public String htmxDeleteTodoItem(@PathVariable("id") Long id,
-                                     HttpServletResponse response) {
+    public String htmxDeleteTodoItem(@PathVariable("id") Long id) {
         repository.deleteById(id);
 
-        response.setHeader("HX-Trigger", "itemDeleted");
         return "";
     }
 
-    @GetMapping(value = "/active-items-count", headers = "HX-Request")
+    @GetMapping("/active-items-count")
+    @HxRequest
     public String htmxActiveItemsCount(Model model) {
         model.addAttribute("numberOfActiveItems", getNumberOfActiveItems());
 
