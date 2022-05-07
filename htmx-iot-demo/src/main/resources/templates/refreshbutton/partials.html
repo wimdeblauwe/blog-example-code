@@ -2,7 +2,8 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:fragment="device-info-with-load(device)" th:attr="hx-get=|/refresh-button/${device.id}|" hx-trigger="load" hx-swap="outerHTML">
+<div th:fragment="device-info-with-load(device)" th:attr="hx-get=|/refresh-button/${device.id}|" hx-trigger="load"
+     hx-swap="outerHTML">
     <h2 class="text-xl" th:text="${device.name}"></h2>
     <div class="grid grid-cols-2 gap-4 items-center">
         <div class="text-gray-700">Id:</div>
@@ -38,7 +39,9 @@
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
             </div>
-            <button th:attr="hx-get=|/refresh-button/${device.id}|,hx-target=|#device-info-${device.id}|,hx-indicator=|#device-info-${device.id}|"
+            <button th:attr="hx-get=|/refresh-button/${device.id}|,
+                             hx-target=|#device-info-${device.id}|,
+                             hx-indicator=|#device-info-${device.id}|"
                     hx-swap="outerHTML"
                     class="ml-4 px-4 py-2 font-semibold text-sm bg-cyan-500 text-white rounded-full shadow-sm">Refresh
             </button>

@@ -2,7 +2,11 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:fragment="device-info-with-load(device)" th:attr="hx-get=|/onload/${device.id}|" hx-trigger="load">
+<div th:fragment="device-info-with-load(device)"
+     th:attr="hx-get=|/onload/${device.id}|"
+     th:id="|device-info-${device.id}|"
+     hx-trigger="load"
+     hx-swap="outerHTML">
     <h2 class="text-xl" th:text="${device.name}"></h2>
     <div class="grid grid-cols-2 gap-4">
         <div class="text-gray-700">Id:</div><div th:text="${device.id}"></div>
@@ -13,7 +17,8 @@
         </svg>
     </div>
 </div>
-<div th:fragment="device-info(device)">
+<div th:fragment="device-info(device)"
+     th:id="|device-info-${device.id}|">
     <h2 class="text-xl" th:text="${device.name}"></h2>
     <div class="grid grid-cols-2 gap-4">
         <div class="text-gray-700">Id:</div><div th:text="${device.id}"></div>
