@@ -1,0 +1,33 @@
+{
+  "name": "live-reload-npm-scripts",
+  "scripts": {
+    "build": "npm-run-all --parallel build:*",
+    "build:html": "node copy-files.js .*\\.html$",
+    "build:css": "mkdirp target/classes/static/css && postcss src/main/resources/static/css/*.css -d target/classes/static/css",
+    "build:js": "mkdirp target/classes/static/js && babel src/main/resources/static/js/ --out-dir target/classes/static/js/",
+    "build:svg": "mkdirp target/classes/static/svg && node copy-files.js .*\\.svg$",
+    "build-prod": "NODE_ENV='production' npm-run-all --parallel build-prod:*",
+    "build-prod:html": "npm run build:html",
+    "build-prod:css": "npm run build:css",
+    "build-prod:js": "mkdirp target/classes/static/js && babel src/main/resources/static/js/ --minified --out-dir target/classes/static/js/",
+    "build-prod:svg": "npm run build:svg",
+    "watch": "npm-run-all --parallel watch:*",
+    "watch:html": "onchange 'src/main/resources/templates/**/*.html' -- npm run build:html",
+    "watch:css": "onchange 'src/main/resources/static/css/**/*.css' -- npm run build:css",
+    "watch:js": "onchange 'src/main/resources/static/js/**/*.js' -- npm run build:js",
+    "watch:svg": "onchange 'src/main/resources/static/svg/**/*.svg' -- npm run build:svg",
+    "watch:serve": "browser-sync start --proxy localhost:8080 --files 'target/classes/templates' 'target/classes/static'"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.18.6",
+    "autoprefixer": "^10.4.7",
+    "browser-sync": "^2.27.10",
+    "cssnano": "^5.1.12",
+    "mkdirp": "^1.0.4",
+    "ncp": "^2.0.0",
+    "npm-run-all": "^4.1.5",
+    "onchange": "^7.1.0",
+    "postcss": "^8.4.14",
+    "postcss-cli": "^10.0.0"
+  }
+}
