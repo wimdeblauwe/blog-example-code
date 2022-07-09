@@ -1,10 +1,10 @@
-package com.wimdeblauwe.examples.livereloadnpmscripts;
+package com.wimdeblauwe.examples.livereloadnpmscriptstailwindcss;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class LiveReloadNpmScriptsApplicationTests {
+class LiveReloadNpmScriptsTailwindCssApplicationTests {
 
 	@Test
 	void contextLoads() {
