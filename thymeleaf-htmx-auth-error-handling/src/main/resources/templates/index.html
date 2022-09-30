@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns:hx="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Auth Error Handling</title>
+    <link rel="stylesheet" th:href="@{/css/application.css}">
+</head>
+<body>
+<h1>Auth Error Handling</h1>
+<button hx:get="@{/jokes/random}"
+        hx-target="#joke">Get new joke
+</button>
+<div id="joke" class="joke-parent"></div>
+<script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
+</body>
+</html>
