@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<sl-alert th:fragment="itemAdded" variant="success" duration="3000" closable>
+    <sl-icon slot="icon" name="check2-circle"></sl-icon>
+    <strong th:text="#{item.added.title}">Success title</strong><br/>
+    [[#{item.added.message(${itemName})}]]
+</sl-alert>
+<sl-alert th:fragment="itemAddedNearShipping" variant="success" duration="3000" closable>
+    <sl-icon slot="icon" name="check2-circle"></sl-icon>
+    <strong th:text="#{item.added.title}">Success title</strong><br/>
+    [[#{item.added-near-shipping.message(${itemName}, ${amountToSpend})}]]
+</sl-alert>
+
+<sl-alert th:fragment="successI18n(titleKey,messageKey)" variant="success" duration="3000" closable>
+    <sl-icon slot="icon" name="check2-circle"></sl-icon>
+    <strong th:text="#{__${title}__}">Success title</strong><br/>
+    [[#{__${message}__}]]
+</sl-alert>
+
+<sl-alert th:fragment="success(title,message)" variant="success" duration="3000" closable>
+    <sl-icon slot="icon" name="check2-circle"></sl-icon>
+    <strong th:text="${title}">Success title</strong><br/>
+    [[${message}]]
+</sl-alert>
+
+<sl-alert th:fragment="error" id="htmx-error-toast" variant="danger" duration="3000" closable>
+    <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+    <strong>Error</strong><br/>
+    There was a problem communicating with the server.
+</sl-alert>
+</body>
+</html>
