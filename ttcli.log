@@ -1,0 +1,3 @@
+2023-03-05T09:30:31.884+01:00  INFO 2107 --- [main] i.g.w.t.TamingThymeleafCliApplication    : Starting AOT-processed TamingThymeleafCliApplication using Java 17.0.6 with PID 2107 (/usr/local/Cellar/ttcli/0.7.0/libexec/bin/ttcli started by wdb in /Users/wdb/Projects/personal/blog-example-code)
+2023-03-05T09:30:31.885+01:00  INFO 2107 --- [main] i.g.w.t.TamingThymeleafCliApplication    : No active profile set, falling back to 1 default profile: "default"
+2023-03-05T09:30:31.999+01:00  INFO 2107 --- [main] i.g.w.t.TamingThymeleafCliApplication    : Started TamingThymeleafCliApplication in 0.171 seconds (process running for 0.235)
