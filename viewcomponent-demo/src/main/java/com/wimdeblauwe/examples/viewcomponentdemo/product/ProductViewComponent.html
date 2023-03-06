@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<!--/*@thymesVar id="product" type="com.wimdeblauwe.examples.viewcomponentdemo.product.Product"*/-->
+<li class="flex items-center py-6">
+    <img src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg"
+         alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
+         class="h-16 w-16 flex-none rounded-md border border-gray-200">
+    <div class="ml-4 flex-auto">
+        <h3 class="font-medium text-gray-900">
+            <a href="#" th:text="${product.name()}">Throwback Hip Bag</a>
+        </h3>
+        <p class="text-gray-500" th:text="${product.color()}">Salmon</p>
+    </div>
+</li>
+</body>
+</html>

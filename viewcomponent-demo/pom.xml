@@ -45,8 +45,19 @@
             <artifactId>webjars-locator</artifactId>
             <version>0.46</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.tschuehly</groupId>
+            <artifactId>thymeleaf-view-component</artifactId>
+            <version>0.2.0</version>
+        </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
     <build>
         <resources>
             <resource>
@@ -57,6 +68,12 @@
                     <exclude>**/*.js</exclude>
                     <exclude>**/*.svg</exclude>
                 </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.html</include>
+                </includes>
             </resource>
         </resources>
         <plugins>

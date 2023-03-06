@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<ul>
+  <li th:each="paymentMethod : ${paymentMethods}">
+    <div class="mt-10 ml-10 flex items-center gap-4">
+      <div class="rounded-md bg-blue-400 p-2 text-xs" th:text="${paymentMethod}">VISA</div>
+      <div th:text="${paymentMethod}">VISA</div>
+    </div>
+  </li>
+</ul>
+</body>
+</html>
