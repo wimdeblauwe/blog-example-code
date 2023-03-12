@@ -48,7 +48,7 @@
         <dependency>
             <groupId>com.github.tschuehly</groupId>
             <artifactId>thymeleaf-view-component</artifactId>
-            <version>0.2.0</version>
+            <version>0.3.1</version>
         </dependency>
     </dependencies>
 

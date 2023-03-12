@@ -1,18 +1,13 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:view="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layout/main}">
 <body>
 <div layout:fragment="content">
-    <div>
-        [(${{@infoViewComponent.render()}})]
-    </div>
-    <div>
-        [(${{@productListViewComponent.render()}})]
-    </div>
-    <div>
-        [(${{@paymentViewComponent.render()}})]
-    </div>
+    <div view:component="infoViewComponent"></div>
+    <div view:component="productListViewComponent"></div>
+<!--    <div view:component="paymentViewComponent"></div>-->
 </div>
 </body>
 </html>

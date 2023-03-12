@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:view="http://www.w3.org/1999/xhtml">
 <body>
 <!--/*@thymesVar id="products" type="java.util.List"*/-->
 <form class="mx-auto max-w-2xl px-4">
@@ -23,7 +23,7 @@
         </li>
 -->
         <th:block th:each="product : ${products}">
-            [(${{@productViewComponent.render(product)}})]
+            <div view:component="productViewComponent.render(product)"></div>
         </th:block>
 
     </ul>
