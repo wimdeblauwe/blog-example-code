@@ -2,12 +2,24 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/main}">
+      layout:decorate="~{layout/main}" xmlns:hx="http://www.w3.org/1999/xhtml">
 <body>
 <div layout:fragment="content">
-    <!-- Add content here -->
-    <div>Welcome to your Spring Boot with Thymeleaf project!</div>
-    <div>See <code>HELP.md</code> for instructions on how to get started.</div>
+    <div class="mx-8 mt-4">
+        <div id="global-error"></div>
+    </div>
+    <div class="m-4">
+        <button class="btn btn-neutral"
+                hx:get="@{/test}"
+                hx-swap="outerHTML"
+        >Do something</button>
+    </div>
+    <div class="m-4">
+        <button class="btn btn-neutral"
+                hx:get="@{/test-exception}"
+                hx-swap="outerHTML"
+        >Do something</button>
+    </div>
 </div>
 <th:block layout:fragment="script-content">
     <!-- Add additional scripts there that are only needed for this page (Application wide scripts should be added in layout/main.html) --->
