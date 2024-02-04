@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+            xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <title layout:title-pattern="$CONTENT_TITLE | $LAYOUT_TITLE">[[#{app.title}]]</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link th:if="${!isDevserver}" th:href="@{/css/bundle.css}" rel="stylesheet" />
+        <script th:src="@{/js/bundle.js}" defer></script>
+    </head>
+    <body hx-boost="true">
+        <header class="bg-gray-50">
+            <div class="container px-4 md:px-6">
+                <nav class="flex flex-wrap items-center justify-between py-2">
+                    <a th:href="@{/}" class="flex py-1.5 mr-4">
+                        <img th:src="@{/images/logo.png}" th:alt="#{app.title}" width="30" height="30" class="inline-block">
+                        <span class="text-xl pl-3">[[#{app.title}]]</span>
+                    </a>
+                    <button type="button" class="js-dropdown md:hidden border rounded" data-dropdown-single="true"
+                            th:aria-label="#{navigation.toggle}" aria-controls="navbarToggle" aria-expanded="false">
+                        <div class="space-y-1.5 my-2.5 mx-4">
+                            <div class="w-6 h-0.5 bg-gray-500"></div>
+                            <div class="w-6 h-0.5 bg-gray-500"></div>
+                            <div class="w-6 h-0.5 bg-gray-500"></div>
+                        </div>
+                    </button>
+                    <div class="hidden md:block flex grow md:grow-0 justify-end basis-full md:basis-auto pt-3 md:pt-1 pb-1" id="navbarToggle">
+                        <ul class="flex">
+                            <li>
+                                <a th:href="@{/}" class="text-gray-500 p-2">[[#{navigation.home}]]</a>
+                            </li>
+                            <li class="relative">
+                                <a class="js-dropdown text-gray-500 p-2" href="#" id="navbarEntitiesLink" role="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span>[[#{navigation.entities}]]</span>
+                                    <span class="text-[9px] align-[3px] pl-0.5">&#9660;</span>
+                                </a>
+                                <ul class="hidden block absolute right-0 bg-white border border-gray-300 rounded min-w-[10rem] py-2 mt-2" aria-labelledby="navbarEntitiesLink">
+                                    <li><a th:href="@{/users}" class="inline-block w-full hover:bg-gray-200 px-4 py-1">[[#{user.list.headline}]]</a></li>
+                                    <li><a th:href="@{/teams}" class="inline-block w-full hover:bg-gray-200 px-4 py-1">[[#{team.list.headline}]]</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="text-gray-500 p-2">[[#{navigation.login}]]</a>
+                                <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="inline cursor-pointer text-gray-500 p-2">
+                                    <input th:value="#{navigation.logout}" type="submit" />
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <main class="my-12">
+            <div class="container px-4 md:px-6">
+                <p th:if="${MSG_SUCCESS}" class="bg-green-200 border-green-800 text-green-800 border rounded p-4 mb-6" role="alert">[[${MSG_SUCCESS}]]</p>
+                <p th:if="${MSG_INFO}" class="bg-blue-200 border-blue-800 text-blue-800 border rounded p-4 mb-6" role="alert">[[${MSG_INFO}]]</p>
+                <p th:if="${MSG_ERROR}" class="bg-red-200 border-red-800 text-red-800 border rounded p-4 mb-6" role="alert">[[${MSG_ERROR}]]</p>
+                <div layout:fragment="content" />
+            </div>
+        </main>
+    </body>
+</html>

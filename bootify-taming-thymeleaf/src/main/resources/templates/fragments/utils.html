@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <div th:fragment="pagination()" th:if="${paginationModel != null}" class="grid grid-cols-12 mt-10">
+            <nav th:if="${paginationModel.steps.size > 3}" class="col-span-8">
+                <ul class="flex">
+                    <li th:each="step : ${paginationModel.steps}" class="group">
+                        <a th:href="${requestUri + step.url}" class="border-y border-l group-first:rounded-l group-last:rounded-r group-last:border-r border-gray-300 py-2 px-3.5"
+                                th:classappend="${(step.active ? 'bg-blue-600 text-white border-blue-600' : '') + (step.disabled ? 'pointer-events-none text-gray-400' : 'hover:bg-gray-100')}">[[${step.label}]]</a>
+                    </li>
+                </ul>
+            </nav>
+            <div th:classappend="${paginationModel.steps.size <= 3}? col-start-9" class="col-span-4 sm:text-right mt-4 sm:mt-0">[[${paginationModel.elements}]]</div>
+        </div>
+
+        <div th:fragment="sorting(object, sortOptions)" th:with="columnClass=${columnClass}" th:classappend="${columnClass}" class="w-full md:w-1/2 xl:w-1/3">
+            <select class="js-selectlinks border-gray-300 rounded w-full">
+                <option th:each="sortOption : ${sortOptions}"
+                        th:value="@{${requestUri}(sort=${sortOption},filter=${filter})}"
+                        th:selected="${(param.sort == null && sortOptionStat.first) || (param.sort != null && param.sort[0] == sortOption)}"
+                        >[[#{__${object}__.list.sort.__${sortOption}__}]]</option>
+            </select>
+        </div>
+
+        <form th:fragment="searchFilter(object)" th:action="${requestUri}" method="get" class="w-full md:w-1/2 xl:w-1/3">
+            <div class="mb-3 w-full flex flex-wrap items-stretch">
+                <input type="text" name="filter" th:value="${filter == null ? '' : filter}" th:placeholder="#{__${object}__.list.filter}" class="border-gray-300 rounded-l flex-[1_1_auto]">
+                <button type="submit" class="text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-4 rounded-r px-5 py-2">[[#{searchFilter.apply}]]</button>
+            </div>
+        </form>
+    </body>
+</html>

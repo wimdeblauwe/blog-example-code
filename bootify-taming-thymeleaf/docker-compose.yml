@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: postgres:16.1
+    environment:
+    - POSTGRES_DB=taming-thymeleaf
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=P4ssword!
+    ports:
+    - 5433:5432

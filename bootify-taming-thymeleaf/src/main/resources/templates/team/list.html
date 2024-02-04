@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{team.list.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="flex flex-wrap mb-6">
+                <h1 class="grow text-3xl md:text-4xl font-medium mb-2">[[#{team.list.headline}]]</h1>
+                <div>
+                    <a th:href="@{/teams/add}" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2">[[#{team.list.createNew}]]</a>
+                </div>
+            </div>
+            <div th:if="${!teams.empty || filter != null}" class="flex flex-wrap justify-between">
+                <div th:replace="~{fragments/utils::searchFilter(object='team')}" />
+                <div th:replace="~{fragments/utils::sorting(object='team', sortOptions=${ {'id,ASC', 'name,ASC'} })}" />
+            </div>
+            <div th:if="${teams.empty}">[[#{team.list.empty}]]</div>
+            <div th:if="${!teams.empty}" class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-left p-2">[[#{team.id.label}]]</th>
+                            <th scope="col" class="text-left p-2">[[#{team.name.label}]]</th>
+                            <th scope="col" class="text-left p-2">[[#{team.coach.label}]]</th>
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody class="border-t-2 border-black">
+                        <tr th:each="team : ${teams}" class="odd:bg-gray-100">
+                            <td class="p-2">[[${team.id}]]</td>
+                            <td class="p-2">[[${team.name}]]</td>
+                            <td class="p-2">[[${team.coach}]]</td>
+                            <td class="p-2">
+                                <div class="float-right whitespace-nowrap">
+                                    <a th:href="@{/teams/edit/{id}(id=${team.id})}" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm">[[#{team.list.edit}]]</a>
+                                    <form th:action="@{/teams/delete/{id}(id=${team.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="inline">
+                                        <button type="submit" class="inline-block text-white bg-gray-500 hover:bg-gray-600 focus:ring-gray-200 focus:ring-3 rounded px-2.5 py-1.5 text-sm">[[#{team.list.delete}]]</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/utils::pagination()}" />
+        </div>
+    </body>
+</html>
