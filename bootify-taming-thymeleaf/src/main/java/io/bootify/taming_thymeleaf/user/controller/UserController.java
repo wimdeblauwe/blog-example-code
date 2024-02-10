@@ -1,9 +1,10 @@
 package io.bootify.taming_thymeleaf.user.controller;
 
+import io.bootify.taming_thymeleaf.model.UserRole;
 import io.bootify.taming_thymeleaf.user.model.Gender;
 import io.bootify.taming_thymeleaf.user.model.UserDTO;
 import io.bootify.taming_thymeleaf.user.service.UserService;
-import io.bootify.taming_thymeleaf.util.UserRoles;
+import io.bootify.taming_thymeleaf.util.ReferencedWarning;
 import io.bootify.taming_thymeleaf.util.WebUtils;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,7 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/users")
-@PreAuthorize("hasAuthority('" + UserRoles.ROLE_USER + "')")
+@PreAuthorize("hasAuthority('" + UserRole.Fields.USER + "')")
 public class UserController {
 
     private final UserService userService;
@@ -48,9 +49,6 @@ public class UserController {
     @PostMapping("/add")
     public String add(@ModelAttribute("user") @Valid final UserDTO userDTO,
             final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
-        if (!bindingResult.hasFieldErrors("email") && userService.emailExists(userDTO.getEmail())) {
-            bindingResult.rejectValue("email", "Exists.user.email");
-        }
         if (bindingResult.hasErrors()) {
             return "user/add";
         }
@@ -69,12 +67,6 @@ public class UserController {
     public String edit(@PathVariable(name = "id") final Long id,
             @ModelAttribute("user") @Valid final UserDTO userDTO, final BindingResult bindingResult,
             final RedirectAttributes redirectAttributes) {
-        final UserDTO currentUserDTO = userService.get(id);
-        if (!bindingResult.hasFieldErrors("email") &&
-                !userDTO.getEmail().equalsIgnoreCase(currentUserDTO.getEmail()) &&
-                userService.emailExists(userDTO.getEmail())) {
-            bindingResult.rejectValue("email", "Exists.user.email");
-        }
         if (bindingResult.hasErrors()) {
             return "user/edit";
         }
@@ -86,9 +78,10 @@ public class UserController {
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable(name = "id") final Long id,
             final RedirectAttributes redirectAttributes) {
-        final String referencedWarning = userService.getReferencedWarning(id);
+        final ReferencedWarning referencedWarning = userService.getReferencedWarning(id);
         if (referencedWarning != null) {
-            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, referencedWarning);
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR,
+                    WebUtils.getMessage(referencedWarning.getKey(), referencedWarning.getParams().toArray()));
         } else {
             userService.delete(id);
             redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("user.delete.success"));

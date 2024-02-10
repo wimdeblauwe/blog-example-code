@@ -41,7 +41,7 @@ public class HttpSecurityConfig {
                 .authenticationManager(httpAuthenticationManager())
                 .formLogin(form -> form
                     .loginPage("/login")
-                    .usernameParameter("login")
+                    .usernameParameter("email")
                     .failureUrl("/login?loginError=true"))
                 .logout(logout -> logout
                     .logoutSuccessUrl("/login?logoutSuccess=true")

@@ -33,7 +33,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 )
 @AutoConfigureMockMvc
 @ActiveProfiles("it")
-@Sql("/data/clearAll.sql")
+@Sql({"/data/clearAll.sql", "/data/userData.sql"})
 @SqlMergeMode(SqlMergeMode.MergeMode.MERGE)
 public abstract class BaseIT {
 
@@ -69,7 +69,7 @@ public abstract class BaseIT {
     public MockHttpSession authenticatedSession() throws Exception {
         if (authenticatedSession == null) {
             final MvcResult mvcResult = mockMvc.perform(
-                    SecurityMockMvcRequestBuilders.formLogin().user("login", "bootify").password("password", "Bootify!")).andReturn();
+                    SecurityMockMvcRequestBuilders.formLogin().user("email", "bootify").password("password", "Bootify!")).andReturn();
             authenticatedSession = ((MockHttpSession)mvcResult.getRequest().getSession(false));
         }
         return authenticatedSession;

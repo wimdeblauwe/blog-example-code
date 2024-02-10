@@ -2,22 +2,20 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
     <body>
         <div th:fragment="inputRow(object, field)" th:with="type=${type} ?: 'text', required=${required}, disabled=${disabled},
-                inputClassappend=${#fields.hasErrors(field) || (type == 'textarea' && #fields.hasErrors(field + '.*')) ? 'border-red-600 ' : ''} + ${disabled == true ? 'bg-gray-100 ' : ''} + ${inputClass}"
+                inputClassappend=${#fields.hasErrors(field) || (type == 'textarea' && #fields.hasErrors(field + '.*')) ? 'border-red-600 ' : ''} + ${disabled == true ? 'bg-gray-100 ' : ''} + ${inputClass ?: ''}"
                 th:object="${__${object}__}" class="md:grid grid-cols-12 gap-4 mb-4">
             <div th:if="${type == 'checkbox'}" class="col-span-10 col-start-3">
                 <div>
                     <input th:type="${type}" th:field="*{__${field}__}" th:disabled="${disabled}"
                             th:classappend="${inputClassappend}" class="rounded border-gray-300" />
                     <label th:for="${#ids.prev(field)}" class="ml-2">
-                        <span>[[#{__${object}__.__${field}__.label}]]</span><!--/*
-                        */--><span th:replace="~{:: requiredStar(object=${object}, field=${field}, required=${required})}" />
+                        <span>[[#{__${object}__.__${field}__.label} + ${required == true ? '*' : ''}]]</span>
                     </label>
                 </div>
                 <div th:replace="~{:: fieldErrors(${object}, ${field})}" />
             </div>
             <label th:if="${type != 'checkbox'}" th:for="${field}" class="col-span-2 py-2">
-                <span>[[#{__${object}__.__${field}__.label}]]</span><!--/*
-                */--><span th:replace="~{:: requiredStar(object=${object}, field=${field}, required=${required})}" />
+                <span>[[#{__${object}__.__${field}__.label} + ${required == true ? '*' : ''}]]</span>
             </label>
             <div th:if="${type != 'checkbox'}" class="col-span-10">
                 <input th:if="${type == 'text' || type == 'password' || type == 'email' || type == 'tel' || type == 'number'}"
@@ -33,7 +31,7 @@
                     <option th:if="${__${field}__Values instanceof T(java.util.Map)}"
                             th:each="optionValue : ${__${field}__Values}" th:value="${optionValue.key}">[[${optionValue.value}]]</option>
                 </select>
-                <div th:if="${type == 'radio' && !T(io.bootify.taming_thymeleaf.util.WebUtils).isRequiredField(__${object}__, field)}" class="inline-block mr-4 last:mr-0 pt-2">
+                <div th:if="${type == 'radio' && required != true}" class="inline-block mr-4 last:mr-0 pt-2">
                     <input value="" th:checked="*{__${field}__} == null" th:name="${field}" th:disabled="${disabled}"
                             th:classappend="${inputClassappend}" type="radio" class="border-gray-300" />
                     <label class="ml-2">[[#{select.empty.label}]]</label>
@@ -46,9 +44,6 @@
                 <div th:replace="~{:: fieldErrors(${object}, ${field})}" />
             </div>
         </div>
-
-        <span th:fragment="requiredStar(object, field)" th:with="required=${required}"
-                th:if="${required == null ? T(io.bootify.taming_thymeleaf.util.WebUtils).isRequiredField(__${object}__, field) : required}">*</span>
 
         <div th:fragment="fieldErrors(object, field)" th:object="${__${object}__}" th:remove="tag">
             <div th:if="${#fields.hasErrors(field) || #fields.hasErrors(field + '.*')}" class="mt-1">

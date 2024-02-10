@@ -8,18 +8,18 @@ public class AuthenticationRequest {
 
     @NotNull
     @Size(max = 255)
-    private String login;
+    private String email;
 
     @NotNull
     @Size(max = 255)
     private String password;
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(final String login) {
-        this.login = login;
+    public void setEmail(final String email) {
+        this.email = email;
     }
 
     public String getPassword() {

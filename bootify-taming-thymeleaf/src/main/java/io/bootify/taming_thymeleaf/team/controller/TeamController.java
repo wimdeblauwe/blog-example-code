@@ -1,12 +1,13 @@
 package io.bootify.taming_thymeleaf.team.controller;
 
 import io.bootify.taming_thymeleaf.model.SimplePage;
+import io.bootify.taming_thymeleaf.model.UserRole;
 import io.bootify.taming_thymeleaf.team.model.TeamDTO;
 import io.bootify.taming_thymeleaf.team.service.TeamService;
 import io.bootify.taming_thymeleaf.user.domain.User;
 import io.bootify.taming_thymeleaf.user.repos.UserRepository;
 import io.bootify.taming_thymeleaf.util.CustomCollectors;
-import io.bootify.taming_thymeleaf.util.UserRoles;
+import io.bootify.taming_thymeleaf.util.ReferencedWarning;
 import io.bootify.taming_thymeleaf.util.WebUtils;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/teams")
-@PreAuthorize("hasAuthority('" + UserRoles.ROLE_USER + "')")
+@PreAuthorize("hasAuthority('" + UserRole.Fields.USER + "')")
 public class TeamController {
 
     private final TeamService teamService;
@@ -94,9 +95,10 @@ public class TeamController {
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable(name = "id") final Long id,
             final RedirectAttributes redirectAttributes) {
-        final String referencedWarning = teamService.getReferencedWarning(id);
+        final ReferencedWarning referencedWarning = teamService.getReferencedWarning(id);
         if (referencedWarning != null) {
-            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, referencedWarning);
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR,
+                    WebUtils.getMessage(referencedWarning.getKey(), referencedWarning.getParams().toArray()));
         } else {
             teamService.delete(id);
             redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("team.delete.success"));

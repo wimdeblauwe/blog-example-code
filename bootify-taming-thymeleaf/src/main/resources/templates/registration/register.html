@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{registration.register.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <h1 class="grow text-3xl md:text-4xl font-medium mb-8">[[#{registration.register.headline}]]</h1>
+            <div th:replace="~{fragments/forms::globalErrors('registrationRequest')}" />
+            <form th:action="${requestUri}" method="post">
+                <div th:replace="~{fragments/forms::inputRow(object='registrationRequest', field='firstName', required=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='registrationRequest', field='lastName', required=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='registrationRequest', field='gender', required=true, type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='registrationRequest', field='email', required=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='registrationRequest', field='phoneNumber')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='registrationRequest', field='birthday', inputClass='js-datepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='registrationRequest', field='password', required=true, type='password')}" />
+                <input type="submit" th:value="#{registration.register.headline}" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
+            </form>
+        </div>
+    </body>
+</html>

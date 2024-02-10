@@ -14,12 +14,13 @@
             </div>
             <div th:replace="~{fragments/forms::globalErrors('user')}" />
             <form th:action="${requestUri}" method="post">
-                <div th:replace="~{fragments/forms::inputRow(object='user', field='firstName')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='user', field='lastName')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='user', field='gender', type='select')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='user', field='email')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='user', field='firstName', required=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='user', field='lastName', required=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='user', field='gender', required=true, type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='user', field='email', required=true)}" />
                 <div th:replace="~{fragments/forms::inputRow(object='user', field='phoneNumber')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='user', field='birthday', inputClass='js-datepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='user', field='password', required=true, type='password')}" />
                 <input type="submit" th:value="#{user.add.headline}" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
             </form>
         </div>

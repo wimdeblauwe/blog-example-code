@@ -22,12 +22,17 @@ public class UserDTO {
 
     @NotNull
     @Size(max = 255)
+    @UserEmailUnique
     private String email;
 
     @Size(max = 255)
     private String phoneNumber;
 
     private LocalDate birthday;
+
+    @NotNull
+    @Size(max = 255)
+    private String password;
 
     public Long getId() {
         return id;
@@ -83,6 +88,14 @@ public class UserDTO {
 
     public void setBirthday(final LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(final String password) {
+        this.password = password;
     }
 
 }

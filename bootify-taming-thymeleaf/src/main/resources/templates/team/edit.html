@@ -15,8 +15,8 @@
             <div th:replace="~{fragments/forms::globalErrors('team')}" />
             <form th:action="${requestUri}" method="post">
                 <div th:replace="~{fragments/forms::inputRow(object='team', field='id', disabled=true, type='number')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='team', field='name')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='team', field='coach', type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='team', field='name', required=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='team', field='coach', required=true, type='select')}" />
                 <input type="submit" th:value="#{team.edit.headline}" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
             </form>
         </div>

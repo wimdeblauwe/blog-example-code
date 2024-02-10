@@ -8,6 +8,7 @@ CREATE TABLE "user" (
     email VARCHAR(255) NOT NULL,
     phone_number VARCHAR(255),
     birthday date,
+    password VARCHAR(255) NOT NULL,
     CONSTRAINT user_pkey PRIMARY KEY (id)
 );
 

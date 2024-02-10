@@ -9,7 +9,7 @@ import io.bootify.taming_thymeleaf.team_player.repos.TeamPlayerRepository;
 import io.bootify.taming_thymeleaf.user.domain.User;
 import io.bootify.taming_thymeleaf.user.repos.UserRepository;
 import io.bootify.taming_thymeleaf.util.NotFoundException;
-import io.bootify.taming_thymeleaf.util.WebUtils;
+import io.bootify.taming_thymeleaf.util.ReferencedWarning;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -87,12 +87,15 @@ public class TeamService {
         return team;
     }
 
-    public String getReferencedWarning(final Long id) {
+    public ReferencedWarning getReferencedWarning(final Long id) {
+        final ReferencedWarning referencedWarning = new ReferencedWarning();
         final Team team = teamRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
         final TeamPlayer teamTeamPlayer = teamPlayerRepository.findFirstByTeam(team);
         if (teamTeamPlayer != null) {
-            return WebUtils.getMessage("team.teamPlayer.team.referenced", teamTeamPlayer.getId());
+            referencedWarning.setKey("team.teamPlayer.team.referenced");
+            referencedWarning.addParam(teamTeamPlayer.getId());
+            return referencedWarning;
         }
         return null;
     }

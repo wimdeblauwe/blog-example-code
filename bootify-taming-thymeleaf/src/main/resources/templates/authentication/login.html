@@ -9,10 +9,14 @@
             <h1 class="grow text-3xl md:text-4xl font-medium mb-8">[[#{authentication.login.headline}]]</h1>
             <div th:replace="~{fragments/forms::globalErrors('authentication')}" />
             <form th:action="${requestUri}" method="post">
-                <div th:replace="~{fragments/forms::inputRow(object='authentication', field='login')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='authentication', field='password', type='password')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='authentication', field='email', required=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='authentication', field='password', required=true, type='password')}" />
                 <input type="submit" th:value="#{authentication.login.headline}" class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2 mt-6" />
             </form>
+            <p class="mt-12">
+                <span>[[#{authentication.registerNow}]]</span>
+                <a th:href="@{/register}">[[#{authentication.registerNow.link}]]</a>
+            </p>
         </div>
     </body>
 </html>

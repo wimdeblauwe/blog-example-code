@@ -8,9 +8,10 @@ import io.bootify.taming_thymeleaf.user.domain.User;
 import io.bootify.taming_thymeleaf.user.model.UserDTO;
 import io.bootify.taming_thymeleaf.user.repos.UserRepository;
 import io.bootify.taming_thymeleaf.util.NotFoundException;
-import io.bootify.taming_thymeleaf.util.WebUtils;
+import io.bootify.taming_thymeleaf.util.ReferencedWarning;
 import java.util.List;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -18,12 +19,14 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     private final TeamRepository teamRepository;
     private final TeamPlayerRepository teamPlayerRepository;
 
-    public UserService(final UserRepository userRepository, final TeamRepository teamRepository,
-            final TeamPlayerRepository teamPlayerRepository) {
+    public UserService(final UserRepository userRepository, final PasswordEncoder passwordEncoder,
+            final TeamRepository teamRepository, final TeamPlayerRepository teamPlayerRepository) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
         this.teamRepository = teamRepository;
         this.teamPlayerRepository = teamPlayerRepository;
     }
@@ -76,6 +79,7 @@ public class UserService {
         user.setEmail(userDTO.getEmail());
         user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setBirthday(userDTO.getBirthday());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         return user;
     }
 
@@ -83,16 +87,21 @@ public class UserService {
         return userRepository.existsByEmailIgnoreCase(email);
     }
 
-    public String getReferencedWarning(final Long id) {
+    public ReferencedWarning getReferencedWarning(final Long id) {
+        final ReferencedWarning referencedWarning = new ReferencedWarning();
         final User user = userRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
         final Team coachTeam = teamRepository.findFirstByCoach(user);
         if (coachTeam != null) {
-            return WebUtils.getMessage("user.team.coach.referenced", coachTeam.getId());
+            referencedWarning.setKey("user.team.coach.referenced");
+            referencedWarning.addParam(coachTeam.getId());
+            return referencedWarning;
         }
         final TeamPlayer playerTeamPlayer = teamPlayerRepository.findFirstByPlayer(user);
         if (playerTeamPlayer != null) {
-            return WebUtils.getMessage("user.teamPlayer.player.referenced", playerTeamPlayer.getId());
+            referencedWarning.setKey("user.teamPlayer.player.referenced");
+            referencedWarning.addParam(playerTeamPlayer.getId());
+            return referencedWarning;
         }
         return null;
     }

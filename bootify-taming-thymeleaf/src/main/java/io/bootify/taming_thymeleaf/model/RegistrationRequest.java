@@ -1,65 +1,38 @@
-package io.bootify.taming_thymeleaf.user.domain;
+package io.bootify.taming_thymeleaf.model;
 
 import io.bootify.taming_thymeleaf.user.model.Gender;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import io.bootify.taming_thymeleaf.user.model.UserEmailUnique;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 
-@Entity
-@Table(name = "\"User\"")
-public class User {
+public class RegistrationRequest {
 
-    @Id
-    @Column(nullable = false, updatable = false)
-    @SequenceGenerator(
-            name = "primary_sequence",
-            sequenceName = "primary_sequence",
-            allocationSize = 1,
-            initialValue = 10000
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "primary_sequence"
-    )
-    private Long id;
-
-    @Column(nullable = false)
+    @NotNull
+    @Size(max = 255)
     private String firstName;
 
-    @Column(nullable = false)
+    @NotNull
+    @Size(max = 255)
     private String lastName;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @NotNull
     private Gender gender;
 
-    @Column(nullable = false, unique = true)
+    @NotNull
+    @Size(max = 255)
+    @UserEmailUnique(message = "{registration.register.taken}")
     private String email;
 
-    @Column
+    @Size(max = 255)
     private String phoneNumber;
 
-    @Column
     private LocalDate birthday;
 
-    @Column(nullable = false)
+    @NotNull
+    @Size(max = 255)
     private String password;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(final Long id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;

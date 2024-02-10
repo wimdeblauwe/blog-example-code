@@ -2,7 +2,7 @@
   "name": "taming-thymeleaf-frontend",
   "author": "Bootify.io",
   "scripts": {
-    "devserver": "webpack serve --mode development",
+    "devserver": "webpack serve --open --mode development",
     "build": "webpack --mode production"
   },
   "dependencies": {
