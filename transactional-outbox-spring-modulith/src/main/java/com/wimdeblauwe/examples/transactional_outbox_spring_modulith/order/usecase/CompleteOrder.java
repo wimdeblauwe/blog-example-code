@@ -1,6 +1,5 @@
 package com.wimdeblauwe.examples.transactional_outbox_spring_modulith.order.usecase;
 
-import com.wimdeblauwe.examples.transactional_outbox_spring_modulith.infrastructure.mail.MailMessage;
 import com.wimdeblauwe.examples.transactional_outbox_spring_modulith.order.Order;
 import com.wimdeblauwe.examples.transactional_outbox_spring_modulith.order.OrderCompleted;
 import com.wimdeblauwe.examples.transactional_outbox_spring_modulith.order.repository.OrderRepository;
