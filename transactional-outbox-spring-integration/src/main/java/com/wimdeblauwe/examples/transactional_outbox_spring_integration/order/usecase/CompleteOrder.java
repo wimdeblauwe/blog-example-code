@@ -29,13 +29,13 @@ public class CompleteOrder {
     order.setAmount(amount);
     order.setCustomerEmail(email);
 
-    LOGGER.info("Save order in database");
+    LOGGER.info("Save order {} in database", order.getId());
     orderRepository.save(order);
 
     MailMessage message = new MailMessage("Order %s completed".formatted(order.getId()),
         "Your order is registered in our system and will be processed.",
         order.getCustomerEmail());
-    LOGGER.info("Sending email for order");
+    LOGGER.info("Sending email for order {}", order.getId());
     mailGateway.sendMail(message);
   }
 }

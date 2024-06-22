@@ -17,7 +17,7 @@ public class LoggingMailSender implements
     if (randomGenerator.nextBoolean()) {
       LOGGER.info("Sending email: {}", mailMessage);
     } else {
-      throw new RuntimeException("Email server down");
+      throw new RuntimeException("Email server down for mail " + mailMessage);
     }
   }
 }
