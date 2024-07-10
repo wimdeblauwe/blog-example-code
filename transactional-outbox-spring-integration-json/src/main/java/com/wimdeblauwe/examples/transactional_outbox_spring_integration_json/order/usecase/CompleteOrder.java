@@ -1,9 +1,9 @@
-package com.wimdeblauwe.examples.transactional_outbox_spring_integration.order.usecase;
+package com.wimdeblauwe.examples.transactional_outbox_spring_integration_json.order.usecase;
 
-import com.wimdeblauwe.examples.transactional_outbox_spring_integration.infrastructure.mail.MailGateway;
-import com.wimdeblauwe.examples.transactional_outbox_spring_integration.infrastructure.mail.MailMessage;
-import com.wimdeblauwe.examples.transactional_outbox_spring_integration.order.Order;
-import com.wimdeblauwe.examples.transactional_outbox_spring_integration.order.repository.OrderRepository;
+import com.wimdeblauwe.examples.transactional_outbox_spring_integration_json.infrastructure.mail.MailGateway;
+import com.wimdeblauwe.examples.transactional_outbox_spring_integration_json.infrastructure.mail.MailMessage;
+import com.wimdeblauwe.examples.transactional_outbox_spring_integration_json.order.Order;
+import com.wimdeblauwe.examples.transactional_outbox_spring_integration_json.order.repository.OrderRepository;
 import java.math.BigDecimal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
