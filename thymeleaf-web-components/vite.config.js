@@ -11,7 +11,8 @@ export default defineConfig({
         manifest: true,
         rollupOptions: {
             input: [
-                '/static/css/application.css'
+                '/static/css/application.css',
+                '/static/wc/button/button.ts'
             ]
         },
         outDir: path.join(__dirname, `./target/classes/static`),

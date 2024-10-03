@@ -1,0 +1,40 @@
+.my-button {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 0.25rem;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &.primary {
+    color: white;
+    background-color: dodgerblue;
+    border: 1px solid dodgerblue;
+
+    &:hover {
+      background-color: rgba(30, 144, 255, 0.66);
+    }
+  }
+
+  &.outline {
+    color: #343434;
+    background-color: white;
+    border: 1px solid #cccccc;
+
+    &:hover {
+      background-color: rgba(30, 144, 255, 0.20);
+      color: rgba(30, 144, 255, 0.66);
+    }
+  }
+
+  &.danger {
+    color: white;
+    background-color: red;
+    border: 1px solid red;
+
+    &:hover {
+      background-color: rgba(255, 0, 0, 0.66);
+    }
+  }
+}
