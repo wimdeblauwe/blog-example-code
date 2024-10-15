@@ -1,10 +1,12 @@
 import {defineConfig} from 'vite';
 import path from 'path';
 import springBoot from '@wim.deblauwe/vite-plugin-spring-boot';
+import react from "@vitejs/plugin-react";
 
 export default defineConfig({
     plugins: [
-        springBoot()
+        springBoot(),
+        react()
     ],
     root: path.join(__dirname, './src/main/resources'),
     build: {

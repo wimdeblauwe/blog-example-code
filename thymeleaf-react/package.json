@@ -1,17 +1,25 @@
 {
-  "name" : "thymeleaf-react-demo",
-  "type" : "module",
-  "devDependencies" : {
-    "@wim.deblauwe/vite-plugin-spring-boot" : "^0.4.2",
-    "autoprefixer" : "^10.4.20",
-    "postcss" : "^8.4.47",
-    "tailwindcss" : "^3.4.13",
-    "vite" : "^5.4.9"
+  "name": "thymeleaf-react-demo",
+  "type": "module",
+  "devDependencies": {
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.2",
+    "@wim.deblauwe/vite-plugin-spring-boot": "^0.4.2",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.9"
   },
-  "scripts" : {
-    "dev" : "vite",
-    "dev-open" : "vite --open http://localhost:8080",
-    "build" : "vite build"
+  "scripts": {
+    "dev": "vite",
+    "dev-open": "vite --open http://localhost:8080",
+    "build": "vite build"
   },
-  "private" : true
+  "private": true,
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
 }
