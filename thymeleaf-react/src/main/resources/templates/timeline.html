@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+<body>
+<div layout:fragment="content" class="m-4">
+    <div id="timeline-wrapper"></div>
+</div>
+<th:block layout:fragment="script-content">
+    <script type="application/json" id="occurrences-data" th:inline="javascript">
+        /*[[${occurrences}]]*/
+    </script>
+</th:block>
+</body>
+</html>
