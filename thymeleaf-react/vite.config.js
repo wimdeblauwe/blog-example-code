@@ -13,7 +13,11 @@ export default defineConfig({
         manifest: true,
         rollupOptions: {
             input: [
-                '/static/css/application.css'
+                '/static/css/application.css',
+                '/static/react/ListExample.tsx',
+                '/static/react/FlowbiteExample.tsx',
+                '/static/react/ButtonBar.tsx',
+                '/static/react/OccurrencesTimeline.tsx'
             ]
         },
         outDir: path.join(__dirname, `./target/classes/static`),
