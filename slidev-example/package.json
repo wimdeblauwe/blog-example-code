@@ -1,0 +1,21 @@
+{
+  "name": "slidev-example",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "slidev build",
+    "dev": "slidev --open",
+    "export": "slidev export"
+  },
+  "dependencies": {
+    "@slidev/cli": "^0.50.0-beta.5",
+    "@slidev/theme-default": "latest",
+    "@slidev/theme-seriph": "latest",
+    "vue": "^3.5.12"
+  },
+  "devDependencies": {
+    "@iconify-json/devicon": "^1.2.4",
+    "@iconify-json/solar": "^1.2.1",
+    "@unocss/preset-icons": "^0.63.6"
+  }
+}
