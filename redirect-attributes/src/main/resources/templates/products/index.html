@@ -9,10 +9,16 @@
         <h1 class="text-2xl">Products</h1>
         <a th:href="@{/products/new}" class="btn">Add Product</a>
     </div>
-    <li th:each="product : ${products}">
-        <span th:text="${product.name}"></span> -
-        <span th:text="|€ ${product.price}|"></span>
-    </li>
+    <th:block th:if="${message}">
+        <div th:replace="~{fragments :: success-message(${message})}"></div>
+    </th:block>
+
+    <ul class="mt-4 ml-4 list-disc">
+        <li th:each="product : ${products}">
+            <span th:text="${product.name}"></span> -
+            <span th:text="|€ ${product.price}|"></span>
+        </li>
+    </ul>
 </div>
 <th:block layout:fragment="script-content">
     <!-- Add additional scripts there that are only needed for this page (Application wide scripts should be added in layout/main.html) -->

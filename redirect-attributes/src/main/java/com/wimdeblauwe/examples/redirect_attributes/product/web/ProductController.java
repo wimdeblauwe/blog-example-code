@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/products")
@@ -33,13 +34,14 @@ public class ProductController {
 
   @PostMapping("/new")
   public String create(@ModelAttribute("formData") CreateProductFormData formData,
-      BindingResult bindingResult) {
+      BindingResult bindingResult, RedirectAttributes redirectAttributes) {
     if (bindingResult.hasErrors()) {
       return "products/edit";
     }
 
     productRepository.save(formData.toProduct());
 
+    redirectAttributes.addFlashAttribute("message", "Product created");
     return "redirect:/products";
   }
 }
