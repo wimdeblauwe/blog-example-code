@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+<body>
+<div layout:fragment="content" class="m-4">
+  <h1 class="text-2xl">Create product</h1>
+  <form class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 w-1/2"
+        th:object="${formData}"
+        th:action="@{/products/new}"
+        method="post">
+    <div class="sm:col-span-3">
+      <label for="name" class="block text-sm/6 font-medium text-gray-900">Product name</label>
+      <div class="mt-2">
+        <input type="text" th:field="*{name}" id="name"
+               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+      </div>
+    </div>
+
+    <div class="sm:col-span-3">
+      <label for="price" class="block text-sm/6 font-medium text-gray-900">Price</label>
+      <div class="mt-2">
+        <input type="number" min="1" step="any" th:field="*{price}" id="price"
+               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+      </div>
+    </div>
+
+    <div class="sm:col-span-3">
+      <button type="submit" class="btn">Save</button>
+    </div>
+  </form>
+</div>
+<th:block layout:fragment="script-content">
+  <!-- Add additional scripts there that are only needed for this page (Application wide scripts should be added in layout/main.html) -->
+</th:block>
+</body>
+</html>

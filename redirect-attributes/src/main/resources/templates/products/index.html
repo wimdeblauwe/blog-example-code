@@ -5,9 +5,14 @@
       layout:decorate="~{layout/main}">
 <body>
 <div layout:fragment="content" class="m-4">
-    <h1 class="text-2xl mb-2">Redirect Attributes Demo</h1>
-
-    <a th:href="@{/products}" class="hover:underline">Products</a>
+    <div class="flex items-baseline gap-8 mb-4">
+        <h1 class="text-2xl">Products</h1>
+        <a th:href="@{/products/new}" class="btn">Add Product</a>
+    </div>
+    <li th:each="product : ${products}">
+        <span th:text="${product.name}"></span> -
+        <span th:text="|€ ${product.price}|"></span>
+    </li>
 </div>
 <th:block layout:fragment="script-content">
     <!-- Add additional scripts there that are only needed for this page (Application wide scripts should be added in layout/main.html) -->
