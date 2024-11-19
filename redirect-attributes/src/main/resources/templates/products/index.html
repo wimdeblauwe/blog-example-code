@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/main}">
+      layout:decorate="~{layout/main}" xmlns:hx="http://www.w3.org/1999/xhtml">
 <body>
 <div layout:fragment="content" class="m-4">
     <div class="flex items-baseline gap-8 mb-4">
@@ -16,7 +16,12 @@
     <ul class="mt-4 ml-4 list-disc">
         <li th:each="product : ${products}">
             <span th:text="${product.name}"></span> -
-            <span th:text="|€ ${product.price}|"></span>
+            <span th:text="|€ ${product.price}|"></span> -
+            <span hx:delete="@{/products/{id}(id=${product.id})}"
+                  hx-trigger="click"
+                  class="text-red-500 hover:underline hover:cursor-pointer">
+                Delete
+            </span>
         </li>
     </ul>
 </div>
