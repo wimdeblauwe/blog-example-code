@@ -13,7 +13,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@Import(TestcontainersConfiguration.class)
+@Import(DataJpaTestcontainersConfiguration.class)
 class BicycleRepositoryTest {
   private static final Logger LOGGER = LoggerFactory.getLogger(BicycleRepositoryTest.class);
 

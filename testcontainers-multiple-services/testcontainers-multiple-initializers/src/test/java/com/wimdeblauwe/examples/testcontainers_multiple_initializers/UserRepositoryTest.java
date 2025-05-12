@@ -16,7 +16,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@Import(TestcontainersConfiguration.class)
+@Import(DataJpaTestcontainersConfiguration.class)
 class UserRepositoryTest {
   private static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryTest.class);
   @Autowired
@@ -25,8 +25,8 @@ class UserRepositoryTest {
   @Autowired
   private TestEntityManager entityManager;
 
-  @MockitoBean // This forces a new Spring test context so that containers need to be started again
-  private JpaRepository dummy;
+//  @MockitoBean // This forces a new Spring test context so that containers need to be started again
+//  private JpaRepository dummy;
 
   @Test
   void testSave() {
