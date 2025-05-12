@@ -25,7 +25,7 @@ class UserRepositoryTest {
   @Autowired
   private TestEntityManager entityManager;
 
-  @MockitoBean
+  @MockitoBean // This forces a new Spring test context so that containers need to be started again
   private JpaRepository dummy;
 
   @Test
