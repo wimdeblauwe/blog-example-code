@@ -1,4 +1,4 @@
-package com.wimdeblauwe.examples.testcontainers_multiple_initializers;
+package com.wimdeblauwe.examples.testcontainers_docker_compose;
 
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -7,9 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.UUID;
 
