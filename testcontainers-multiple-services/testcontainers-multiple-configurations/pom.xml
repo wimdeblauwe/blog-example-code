@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.wimdeblauwe.examples</groupId>
-	<artifactId>testcontainers-multiple-initializers</artifactId>
+	<artifactId>testcontainers-multiple-configurations</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>testcontainers-multiple-initializers</name>
+	<name>testcontainers-multiple-configurations</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>

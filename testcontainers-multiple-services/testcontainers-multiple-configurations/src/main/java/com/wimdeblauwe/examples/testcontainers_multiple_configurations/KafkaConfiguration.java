@@ -1,4 +1,4 @@
-package com.wimdeblauwe.examples.testcontainers_multiple_initializers;
+package com.wimdeblauwe.examples.testcontainers_multiple_configurations;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.context.annotation.Bean;
