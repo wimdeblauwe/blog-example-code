@@ -1,7 +1,7 @@
 package com.wimdeblauwe.examples.value_objects_presentation.repository;
 
-import com.wimdeblauwe.examples.value_objects_presentation.Money;
 import com.wimdeblauwe.examples.value_objects_presentation.Currency;
+import com.wimdeblauwe.examples.value_objects_presentation.Money;
 import com.wimdeblauwe.examples.value_objects_presentation.Product;
 import com.wimdeblauwe.examples.value_objects_presentation.TestcontainersConfiguration;
 import org.junit.jupiter.api.Test;
@@ -49,5 +49,35 @@ class ProductRepositoryTest {
     assertThat(allProducts).hasSize(3);
     assertThat(allProducts).extracting(Product::getName)
         .containsExactlyInAnyOrder("Product One", "Product Two", "Product Three");
+  }
+
+  @Test
+  void findByPriceAmountGreaterThanAndPriceCurrency() {
+    repository.save(new Product(1L, "Cheap EUR", new Money(new BigDecimal("10.00"), Currency.EUR)));
+    repository.save(new Product(2L, "Expensive EUR", new Money(new BigDecimal("50.00"), Currency.EUR)));
+    repository.save(new Product(3L, "Expensive USD", new Money(new BigDecimal("50.00"), Currency.USD)));
+
+    List<Product> result = repository.findByPriceAmountGreaterThanAndPriceCurrency(
+        new BigDecimal("20.00"), Currency.EUR);
+
+    assertThat(result)
+        .singleElement()
+        .extracting(Product::getName)
+        .isEqualTo("Expensive EUR");
+
+  }
+
+  @Test
+  void findByPriceGreaterThan() {
+    repository.save(new Product(1L, "Cheap EUR", new Money(new BigDecimal("10.00"), Currency.EUR)));
+    repository.save(new Product(2L, "Expensive EUR", new Money(new BigDecimal("50.00"), Currency.EUR)));
+    repository.save(new Product(3L, "Expensive USD", new Money(new BigDecimal("50.00"), Currency.USD)));
+
+    List<Product> result = repository.findByPriceGreaterThan(new Money(new BigDecimal("20.00"), Currency.EUR));
+
+    assertThat(result)
+        .singleElement()
+        .extracting(Product::getName)
+        .isEqualTo("Expensive EUR");
   }
 }
