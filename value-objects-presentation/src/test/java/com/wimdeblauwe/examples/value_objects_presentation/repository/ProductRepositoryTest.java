@@ -80,4 +80,17 @@ class ProductRepositoryTest {
         .extracting(Product::getName)
         .isEqualTo("Expensive EUR");
   }
+
+  @Test
+  void findByPriceCurrency() {
+    repository.save(new Product(1L, "Cheap EUR", new Money(new BigDecimal("10.00"), Currency.EUR)));
+    repository.save(new Product(2L, "Expensive EUR", new Money(new BigDecimal("50.00"), Currency.EUR)));
+    repository.save(new Product(3L, "Expensive USD", new Money(new BigDecimal("50.00"), Currency.USD)));
+
+    List<Product> result = repository.findAllByPriceCurrency(Currency.EUR);
+
+    assertThat(result)
+        .extracting(Product::getName)
+        .containsExactlyInAnyOrder("Cheap EUR", "Expensive EUR");
+  }
 }

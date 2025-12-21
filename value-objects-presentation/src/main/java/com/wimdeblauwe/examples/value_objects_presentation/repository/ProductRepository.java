@@ -15,7 +15,10 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
       BigDecimal amount,
       Currency currency);
 
-  @Query("SELECT p FROM Product p WHERE p.price.amount > :#{#money.amount} " +
-         "AND p.price.currency = :#{#money.currency}")
+  @Query("""
+      SELECT p FROM Product p WHERE p.price.amount > :#{#money.amount}
+      AND p.price.currency = :#{#money.currency}""")
   List<Product> findByPriceGreaterThan(Money money);
+
+  List<Product> findAllByPriceCurrency(Currency currency);
 }
