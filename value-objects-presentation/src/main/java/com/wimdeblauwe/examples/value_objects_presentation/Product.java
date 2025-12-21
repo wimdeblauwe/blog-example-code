@@ -1,8 +1,6 @@
 package com.wimdeblauwe.examples.value_objects_presentation;
 
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Product {
@@ -14,6 +12,11 @@ public class Product {
 
   @Embedded
   private Money price;
+
+  @Embedded
+  @AttributeOverride(name = "amount", column = @Column(name = "material_cost_amount"))
+  @AttributeOverride(name = "currency", column = @Column(name = "material_cost_currency"))
+  private Money materialCost;
 
   protected Product() {
   }
