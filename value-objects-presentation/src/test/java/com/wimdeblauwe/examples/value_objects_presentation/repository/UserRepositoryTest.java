@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -23,7 +25,7 @@ class UserRepositoryTest {
 
   @Test
   void saveSingleUser() {
-    User user = new User(UserId.create(), "Wim", Email.of("wim.deblauwe@gmail.com"));
+    User user = new User(UserId.create(), "Wim", Email.of("john.doe@gmail.com"));
     User savedUser = repository.save(user);
 
     entityManager.flush();
@@ -35,7 +37,21 @@ class UserRepositoryTest {
     assertThat(savedUser.getName())
         .isEqualTo("Wim");
     assertThat(savedUser.getEmail())
-        .isEqualTo(Email.of("wim.deblauwe@gmail.com"));
+        .isEqualTo(Email.of("john.doe@gmail.com"));
   }
 
+  @Test
+  void findByEmail() {
+    Email email = Email.of("john.doe@gmail.com");
+    User user = new User(UserId.create(), "Wim", email);
+    repository.save(user);
+
+    entityManager.flush();
+    entityManager.clear();
+
+    Optional<User> maybeUser = repository.findByEmail(email);
+    assertThat(maybeUser)
+        .isPresent()
+        .hasValueSatisfying(u -> assertThat(u.getEmail()).isEqualTo(email));
+  }
 }
