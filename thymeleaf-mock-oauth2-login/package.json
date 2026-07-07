@@ -1,0 +1,15 @@
+{
+  "devDependencies" : {
+    "@wim.deblauwe/vite-plugin-spring-boot" : "^1.1.0",
+    "vite" : "^8.1.3"
+  },
+  "name" : "thymeleaf-mock-oauth2-login",
+  "pnpm" : { },
+  "private" : true,
+  "scripts" : {
+    "dev" : "vite",
+    "dev-open" : "vite --open http://localhost:8080",
+    "build" : "vite build"
+  },
+  "type" : "module"
+}

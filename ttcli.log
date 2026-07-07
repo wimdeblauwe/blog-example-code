@@ -1,0 +1,4 @@
+2026-07-06T14:57:10.289+02:00  INFO 25930 --- [main] i.g.w.t.TamingThymeleafCliApplication    : Starting AOT-processed TamingThymeleafCliApplication using Java 25.0.3 with PID 25930 (/opt/homebrew/Cellar/ttcli/1.12.4/libexec/bin/ttcli started by wdb in /Users/wdb/Projects/wimdeblauwe/blog-example-code)
+2026-07-06T14:57:10.289+02:00  INFO 25930 --- [main] i.g.w.t.TamingThymeleafCliApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-07-06T14:57:10.410+02:00  INFO 25930 --- [main] i.g.w.t.TamingThymeleafCliApplication    : Started TamingThymeleafCliApplication in 0.137 seconds (process running for 0.162)
+2026-07-06T14:58:08.315+02:00  INFO 25930 --- [main] i.g.w.t.ProjectInitializationService     : Using init service io.github.wimdeblauwe.ttcli.livereload.vite.ViteLiveReloadInitService@3b357dfc
