@@ -1,0 +1,32 @@
+services:
+  identity:
+    image: 'quay.io/keycloak/keycloak:26.6.4'
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: local-admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin-pwd
+      KC_DB: postgres
+      KC_DB_URL_HOST: db
+      KC_DB_URL_PORT: 5432
+      KC_DB_USERNAME: keycloak-user
+      KC_DB_PASSWORD: keycloak-pwd
+    volumes:
+      - ./docker/keycloak/realm-import.json:/opt/keycloak/data/import/realm-import.json:ro
+    command: start-dev --import-realm
+    ports:
+      - '8081:8080'
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: 'postgres:17'
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak-user
+      POSTGRES_PASSWORD: keycloak-pwd
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: [ 'CMD-SHELL', 'pg_isready -U keycloak-user -d keycloak' ]
+      interval: 10s
+      timeout: 5s
+      retries: 5

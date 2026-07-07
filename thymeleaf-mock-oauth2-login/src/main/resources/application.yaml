@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: Thymeleaf Mock OAuth2 Login
+
+vite:
+  mode: build
