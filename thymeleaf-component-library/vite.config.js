@@ -1,4 +1,5 @@
 import {defineConfig} from 'vite';
+import path from 'path';
 
 export default defineConfig({
   root: __dirname,
@@ -12,8 +13,8 @@ export default defineConfig({
     manifest: true,
     rolldownOptions: {
       input: {
-        'tcl-css': path.join(__dirname, 'css/tcl.css'),
-        'tcl-js': path.join(__dirname, 'js/tcl.js'),
+        'tcl-css': path.join(__dirname, 'src/main/resources/static/css/tcl.css'),
+        'tcl-js': path.join(__dirname, 'src/main/resources/static/js/tcl.js'),
       }
     },
     outDir: path.join(__dirname, 'target/classes/META-INF/resources/tcl'),
