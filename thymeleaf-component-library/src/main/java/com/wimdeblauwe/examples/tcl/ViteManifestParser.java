@@ -29,7 +29,11 @@ public class ViteManifestParser {
   public record ViteManifest(Map<String, ViteManifestEntry> entries) {
 
     public ViteManifestEntry getEntry(String key) {
-      return entries.get(key);
+      ViteManifestEntry entry = entries.get(key);
+      if (entry == null) {
+        throw new IllegalArgumentException("No entry found for key %s. Known entries: %s".formatted(key, entries.keySet()));
+      }
+      return entry;
     }
   }
 

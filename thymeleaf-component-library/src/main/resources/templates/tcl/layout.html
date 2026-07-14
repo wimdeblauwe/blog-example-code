@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--
+  Public asset entry point for consuming applications.
+
+  Usage in a consumer template:
+    <head>
+      <th:block th:replace="~{tcl/layout :: head}"></th:block>
+    </head>
+-->
+<head>
+  <th:block th:fragment="head">
+    <th:block th:if="${@tclAssets.devMode}">
+      <script type="module" th:with="viteClientUrl=${@tclAssets.viteClientUrl}"
+              th:src="${viteClientUrl}"></script>
+      <script type="module" th:with="cssUrl=${@tclAssets.cssUrl}" th:src="${cssUrl}"></script>
+      <script type="module" th:with="jsUrl=${@tclAssets.jsUrl}" th:src="${jsUrl}"></script>
+    </th:block>
+    <th:block th:unless="${@tclAssets.devMode}">
+      <link rel="stylesheet" th:with="url=${@tclAssets.cssUrl}" th:href="@{${url}}"/>
+      <script type="module" th:with="url=${@tclAssets.jsUrl}" th:src="@{${url}}"></script>
+    </th:block>
+  </th:block>
+</head>
+<body>
+</body>
+</html>

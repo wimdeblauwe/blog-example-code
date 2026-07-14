@@ -11,8 +11,9 @@ public class TclAssets {
 
   private static final String MANIFEST_LOCATION = "META-INF/resources/tcl/.vite/manifest.json";
   private static final String BASE_URL = "/tcl/";
-  private static final String CSS_MANIFEST_KEY = "css/tcl.css";
-  private static final String JS_MANIFEST_KEY = "js/tcl.js";
+  private static final String MANIFEST_KEY_BASE_PATH = "src/main/resources/static/";
+  private static final String CSS_MANIFEST_KEY = MANIFEST_KEY_BASE_PATH + "css/tcl.css";
+  private static final String JS_MANIFEST_KEY = MANIFEST_KEY_BASE_PATH + "js/tcl.js";
 
   private boolean devMode;
   private String cssUrl;
@@ -55,7 +56,11 @@ public class TclAssets {
   private void buildAssetsInBuildMode(ViteManifestParser viteManifestParser) {
     this.devMode = false;
     try {
-      ViteManifest manifest = viteManifestParser.parse(new ClassPathResource(MANIFEST_LOCATION));
+      ClassPathResource resource = new ClassPathResource(MANIFEST_LOCATION);
+      if(!resource.exists()) {
+        throw new IllegalStateException("Failed to read the Vite manifest at '" + MANIFEST_LOCATION + "'.");
+      }
+      ViteManifest manifest = viteManifestParser.parse(resource);
       this.cssUrl = BASE_URL + manifest.getEntry(CSS_MANIFEST_KEY).file();
       this.jsUrl = BASE_URL + manifest.getEntry(JS_MANIFEST_KEY).file();
       this.viteClientUrl = null;
