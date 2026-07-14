@@ -1,9 +1,7 @@
 {
   "devEngines": {
     "packageManager": {
-      "name": "pnpm",
-      "version": "^11.12.0",
-      "onFail": "download"
+      "name": "pnpm"
     }
   },
   "type": "module",

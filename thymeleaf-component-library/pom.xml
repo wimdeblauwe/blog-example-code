@@ -19,6 +19,9 @@
     <!-- Maven plugins -->
     <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
     <maven-surefire-plugin.version>3.5.6</maven-surefire-plugin.version>
+    <frontend-maven-plugin.version>2.0.1</frontend-maven-plugin.version>
+    <frontend-maven-plugin.nodeVersion>v24.18.0</frontend-maven-plugin.nodeVersion>
+    <frontend-maven-plugin.pnpmVersion>11.13.0</frontend-maven-plugin.pnpmVersion>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -48,6 +51,15 @@
     </dependency>
   </dependencies>
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>static/**/*.css</exclude>
+          <exclude>static/**/*.js</exclude>
+        </excludes>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -66,6 +78,44 @@
             </path>
           </annotationProcessorPaths>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>${frontend-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>install-node-and-pnpm</id>
+            <goals>
+              <goal>install-node-and-pnpm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <nodeVersion>${frontend-maven-plugin.nodeVersion}</nodeVersion>
+              <pnpmVersion>${frontend-maven-plugin.pnpmVersion}</pnpmVersion>
+            </configuration>
+          </execution>
+          <execution>
+            <id>pnpm-install</id>
+            <goals>
+              <goal>pnpm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <arguments>install</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>pnpm-build</id>
+            <goals>
+              <goal>pnpm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <arguments>run build</arguments>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
