@@ -2,9 +2,18 @@ import {defineConfig} from 'vite';
 import path from 'path';
 import springBoot from '@wim.deblauwe/vite-plugin-spring-boot';
 
+const libraryTemplatesDir = path.resolve(__dirname, '../../src/main/resources/templates');
+
 export default defineConfig({
     plugins: [
-        springBoot()
+        springBoot({
+            fullCopyFilePaths: {
+                // Don't let the Spring Boot plugin copy the watched library templates.
+                // We read them directly using the `FileTemplateResolver` in the component library.
+                exclude: [path.join(libraryTemplatesDir, '**')]
+            }
+        }),
+        watchLibraryTemplates()
     ],
     root: path.join(__dirname, './src/main/resources'),
     build: {
@@ -32,3 +41,20 @@ export default defineConfig({
         }
     }
 });
+
+function watchLibraryTemplates() {
+    return {
+        name: 'watch-tcl-library-templates',
+        configureServer(server) {
+            server.watcher.add(libraryTemplatesDir);
+            const reload = (file) => {
+                if (file.startsWith(libraryTemplatesDir)) {
+                    server.ws.send({type: 'full-reload'});
+                }
+            };
+            server.watcher.on('change', reload);
+            server.watcher.on('add', reload);
+            server.watcher.on('unlink', reload);
+        }
+    };
+}

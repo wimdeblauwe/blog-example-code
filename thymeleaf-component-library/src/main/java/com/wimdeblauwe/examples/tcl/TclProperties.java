@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 @ConfigurationProperties(prefix = "tcl")
 public record TclProperties(@DefaultValue DevProperties dev) {
 
-  record DevProperties(String viteServerUrl) {
+  record DevProperties(String viteServerUrl, String templatesPath) {
 
   }
 }
