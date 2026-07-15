@@ -2,7 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
   <button th:fragment="button"
+          th:with="primary=${attrs != null and attrs.containsKey('primary') and attrs.get('primary') != 'false'}"
           class="tcl-button"
+          th:classappend="${primary ? 'tcl-button--primary' : ''}"
           >Button</button>
 </body>
 </html>

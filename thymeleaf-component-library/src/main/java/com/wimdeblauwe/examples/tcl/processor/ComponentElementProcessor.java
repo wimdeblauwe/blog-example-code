@@ -1,5 +1,7 @@
 package com.wimdeblauwe.examples.tcl.processor;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IModel;
 import org.thymeleaf.model.IModelFactory;
@@ -34,6 +36,10 @@ public class ComponentElementProcessor implements IElementModelProcessor {
 
     String name = componentName(openTag);
 
+    Map<String, String> attrs = getAttributesAsMap(openTag);
+
+    structureHandler.setLocalVariable("attrs", attrs);
+
     // Replace the element with a fragment call to the component template, e.g. <tcl:button> ->
     // ~{tcl/components/button :: button}.
     final String fragmentExpression = "~{tcl/components/" + name + " :: " + name + "}";
@@ -63,6 +69,14 @@ public class ComponentElementProcessor implements IElementModelProcessor {
   @Override
   public int getPrecedence() {
     return StandardDialect.PROCESSOR_PRECEDENCE;
+  }
+
+  private static Map<String, String> getAttributesAsMap(IProcessableElementTag openTag) {
+    Map<String, String> attrs = new LinkedHashMap<>();
+    for (var attribute : openTag.getAllAttributes()) {
+      attrs.put(attribute.getAttributeCompleteName(), attribute.getValue());
+    }
+    return attrs;
   }
 
   /** Derives the component name from the tag, e.g. {@code tcl:button -> button}. */
