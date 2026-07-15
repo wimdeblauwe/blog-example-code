@@ -5,6 +5,7 @@
           th:with="primary=${attrs != null and attrs.containsKey('primary') and attrs.get('primary') != 'false'}"
           class="tcl-button"
           th:classappend="${primary ? 'tcl-button--primary' : ''}"
+          tcl:attrsExcept="primary"
           >Button</button>
 </body>
 </html>
