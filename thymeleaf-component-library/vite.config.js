@@ -2,7 +2,7 @@ import {defineConfig} from 'vite';
 import path from 'path';
 
 export default defineConfig({
-  root: __dirname,
+  root: path.join(__dirname, 'src/main/resources/static'),
   server: {
     port: 5174,
     strictPort: true,
