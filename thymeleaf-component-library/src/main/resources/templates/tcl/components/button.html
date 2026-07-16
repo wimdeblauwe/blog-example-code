@@ -1,11 +1,12 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tcl="http://www.w3.org/1999/xhtml">
 <body>
   <button th:fragment="button"
           th:with="primary=${attrs != null and attrs.containsKey('primary') and attrs.get('primary') != 'false'}"
           class="tcl-button"
           th:classappend="${primary ? 'tcl-button--primary' : ''}"
-          tcl:attrsExcept="primary"
-          >Button</button>
+          tcl:attrsExcept="primary">
+    <tcl:slot>Label</tcl:slot>
+  </button>
 </body>
 </html>

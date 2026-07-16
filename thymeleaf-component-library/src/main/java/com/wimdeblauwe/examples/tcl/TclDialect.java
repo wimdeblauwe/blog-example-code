@@ -2,6 +2,7 @@ package com.wimdeblauwe.examples.tcl;
 
 import com.wimdeblauwe.examples.tcl.processor.AttrsExceptAttributeProcessor;
 import com.wimdeblauwe.examples.tcl.processor.ComponentElementProcessor;
+import com.wimdeblauwe.examples.tcl.processor.SlotElementProcessor;
 import java.util.Set;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
@@ -19,6 +20,7 @@ public class TclDialect extends AbstractProcessorDialect {
   @Override
   public Set<IProcessor> getProcessors(String dialectPrefix) {
     return Set.of(new ComponentElementProcessor(dialectPrefix),
-        new AttrsExceptAttributeProcessor(dialectPrefix));
+        new AttrsExceptAttributeProcessor(dialectPrefix),
+        new SlotElementProcessor(dialectPrefix));
   }
 }

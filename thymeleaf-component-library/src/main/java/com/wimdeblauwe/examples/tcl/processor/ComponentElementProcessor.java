@@ -2,6 +2,7 @@ package com.wimdeblauwe.examples.tcl.processor;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IModel;
 import org.thymeleaf.model.IModelFactory;
@@ -17,12 +18,16 @@ import org.thymeleaf.templatemode.TemplateMode;
 
 public class ComponentElementProcessor implements IElementModelProcessor {
 
+  private static final Set<String> RESERVED = Set.of("slot");
+
   private final String dialectPrefix;
   private final MatchingElementName matchingElementName;
+  private final SlotContentSplitter slotContentSplitter;
 
   public ComponentElementProcessor(String dialectPrefix) {
     this.dialectPrefix = dialectPrefix;
     this.matchingElementName = MatchingElementName.forAllElementsWithPrefix(TemplateMode.HTML, dialectPrefix);
+    this.slotContentSplitter = new SlotContentSplitter(dialectPrefix);
   }
 
   @Override
@@ -35,10 +40,16 @@ public class ComponentElementProcessor implements IElementModelProcessor {
     }
 
     String name = componentName(openTag);
+    if(RESERVED.contains(name)) {
+      return;
+    }
 
     Map<String, String> attrs = getAttributesAsMap(openTag);
-
     structureHandler.setLocalVariable("attrs", attrs);
+
+    SlotContentSplitter.SlotContent slotContent = slotContentSplitter.split(model, modelFactory);
+    structureHandler.setLocalVariable("defaultSlot", slotContent.defaultSlot());
+    structureHandler.setLocalVariable("namedSlots", slotContent.namedSlots());
 
     // Replace the element with a fragment call to the component template, e.g. <tcl:button> ->
     // ~{tcl/components/button :: button}.
