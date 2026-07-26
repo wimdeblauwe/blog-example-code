@@ -15,8 +15,9 @@
 <body>
 <main layout:fragment="content">
 </main>
+<div id="modal-root"></div>
 
-<script type="text/javascript" th:src="@{/webjars/alpinejs/dist/cdn.min.js}"></script>
+<th:block th:replace="~{tcl/layout :: webjars}"></th:block>
 <script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
 <th:block layout:fragment="script-content">
 

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="delete-dialog(title, message, id)">
+  <tcl:dialog title="Delete user"
+              confirmationButtonLabel="Delete"
+              hx-trigger="dialog-confirmed"
+              hx:delete="@{/users/{id}(id=${id})}">[[${message}]]</tcl:dialog>
+</div>
+</body>
+</html>

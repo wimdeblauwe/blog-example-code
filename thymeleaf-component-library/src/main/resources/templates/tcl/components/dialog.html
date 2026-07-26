@@ -1,0 +1,51 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tcl="http://www.w3.org/1999/xhtml">
+<body>
+<div
+    th:fragment="dialog"
+    th:with="
+        title=${attrs != null and attrs.containsKey('title') ? attrs.get('title') : null},
+        confirmationButtonLabel=${attrs != null and attrs.containsKey('confirmationButtonLabel') ? attrs.get('confirmationButtonLabel') : 'Ok'},
+        cancelButtonLabel=${attrs != null and attrs.containsKey('cancelButtonLabel') ? attrs.get('cancelButtonLabel') : 'Cancel'}"
+    class="tcl-dialog"
+    x-data="{
+      dialogOpen: true,
+      cancel() {
+        this.dialogOpen = false;
+        this.$dispatch('dialog-cancelled');
+      },
+      confirm() {
+        this.dialogOpen = false;
+        this.$dispatch('dialog-confirmed');
+      }
+    }"
+    x-show="dialogOpen"
+    x-trap="dialogOpen"
+    @keydown.escape.window="cancel()"
+    @keydown.enter.window="confirm()"
+    tcl:attrsExcept="title,confirmationButtonLabel,cancelButtonLabel"
+>
+  <div class="tcl-dialog-overlay"></div>
+  <div class="tcl-dialog-window" @click.outside="cancel()">
+    <div th:if="${title != null}" class="tcl-dialog-titlebar">
+      <span class="tcl-dialog-title" th:text="${title}">Title</span>
+      <div class="tcl-dialog-titlebar-actions">
+        <div @click="cancel()">
+          <svg viewBox="0 0 24 24">
+            <path
+                d="M19.72 18.86a.607.607 0 1 1-.858.858l-6.861-6.859-6.86 6.859a.607.607 0 0 1-.859-.858L11.141 12 4.282 5.14a.607.607 0 0 1 .859-.86l6.86 6.86 6.861-6.86a.607.607 0 0 1 .858.86L12.86 12z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="tcl-dialog-content">
+      <tcl:slot>Dialog content</tcl:slot>
+    </div>
+    <div class="tcl-dialog-actions">
+      <tcl:button @click="cancel()">[[${cancelButtonLabel}]]</tcl:button>
+      <tcl:button primary @click="confirm()">[[${confirmationButtonLabel}]]</tcl:button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

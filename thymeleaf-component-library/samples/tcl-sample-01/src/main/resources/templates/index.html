@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:tcl="http://www.w3.org/1999/xhtml"
+      xmlns:hx="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/main}">
 <body>
@@ -34,6 +36,11 @@
                 <span>Delete</span>
             </div>
         </tcl:button>
+    </div>
+
+    <h3>Dialog</h3>
+    <div>
+        <tcl:button primary hx:get="@{/users/123}" hx-target="#modal-root">Delete user 123</tcl:button>
     </div>
 </div>
 <th:block layout:fragment="script-content">
