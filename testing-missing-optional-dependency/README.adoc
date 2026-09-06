@@ -1,0 +1,15 @@
+= Testing a missing optional dependency
+
+Example code for the blog post
+https://www.wimdeblauwe.com/blog/2026/09/06/testing-your-auto-configuration-against-a-missing-optional-dependency/[Testing your auto-configuration against a missing optional dependency].
+
+It shows why `FilteredClassLoader` cannot reproduce the `NoClassDefFoundError` that Spring throws
+when it introspects an auto-configuration class that references a type from a missing optional
+dependency, and how a `HidingClassLoader` can.
+
+Run the tests with:
+
+[source]
+----
+mvn test
+----
