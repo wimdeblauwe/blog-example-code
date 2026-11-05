@@ -1,35 +1,47 @@
 <!DOCTYPE html>
-<html th:lang="|${#locale.language}-${#locale.country}|"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sl="https://shadleaf.dev/sl"
-      th:fragment="layout(content)"
-      th:with="title=${title} ?: ~{::title},scriptContent=${scriptContent} ?: ~{}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sl="https://shadleaf.dev/sl"
+      th:fragment="layout(pageTitle, breadcrumb, content)">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <th:block th:replace="${title}"></th:block>
+    <title th:text="|${pageTitle} - Spendleaf|">Spendleaf</title>
     <th:block th:replace="~{sl/layout :: theme-script}"></th:block>
     <th:block th:replace="~{sl/layout :: assets}"></th:block>
     <vite:client></vite:client>
     <vite:vite>
         <vite:entry value="/css/application.css"></vite:entry>
     </vite:vite>
-
     <script defer th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
 </head>
 <body>
-<header>
-    <sl:theme-toggle></sl:theme-toggle>
-    <sl:button variant="outline">Example button</sl:button>
-</header>
-<main th:replace="${content}">
-</main>
-
-<th:block th:replace="${scriptContent}">
-
-</th:block>
+<sl:skip-link/>
+<sl:sidebar-provider>
+    <sl:sidebar variant="inset" collapsible="icon">
+        <sl:sidebar-header>
+            <!-- app name/logo -->
+        </sl:sidebar-header>
+        <sl:sidebar-content>
+            <!-- menu: next step (icons, #slNav.current) -->
+        </sl:sidebar-content>
+    </sl:sidebar>
+    <sl:sidebar-inset>
+        <sl:site-header>
+            <sl:sidebar-trigger/>
+            <sl:separator orientation="vertical"/>
+            <sl:breadcrumb>
+                <sl:breadcrumb-list>
+                    <th:block th:replace="${breadcrumb}"></th:block>
+                </sl:breadcrumb-list>
+            </sl:breadcrumb>
+            <sl:slot name="end">
+                <sl:theme-toggle/>
+            </sl:slot>
+        </sl:site-header>
+        <div class="px-4 pb-4">
+            <h1 class="mb-4 text-2xl font-semibold" th:text="${pageTitle}"></h1>
+            <div th:replace="${content}"></div>
+        </div>
+    </sl:sidebar-inset>
+</sl:sidebar-provider>
 </body>
-<template>
-    <title>My application</title>
-</template>
 </html>
