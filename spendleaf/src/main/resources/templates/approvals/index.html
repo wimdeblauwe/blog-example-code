@@ -1,0 +1,17 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sl="https://shadleaf.dev/sl"
+      th:replace="~{layout/main :: layout('Approvals', ~{::breadcrumb}, ~{::#page-content})}">
+<body>
+<th:block th:ref="breadcrumb">
+    <sl:breadcrumb-item>
+        <sl:breadcrumb-link th:href="@{/}">Dashboard</sl:breadcrumb-link>
+    </sl:breadcrumb-item>
+    <sl:breadcrumb-separator/>
+    <sl:breadcrumb-item>
+        <sl:breadcrumb-page>Approvals</sl:breadcrumb-page>
+    </sl:breadcrumb-item>
+</th:block>
+<div id="page-content">
+    Approvals content
+</div>
+</body>
+</html>
