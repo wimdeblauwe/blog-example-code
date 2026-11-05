@@ -35,3 +35,5 @@ build/
 # Excludes for npm/pnpm
 node_modules
 node
+
+shadleaf.web-types.json
