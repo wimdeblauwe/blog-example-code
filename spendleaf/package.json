@@ -1,0 +1,16 @@
+{
+  "devDependencies" : {
+    "@tailwindcss/vite" : "^4.3.4",
+    "@wim.deblauwe/vite-plugin-spring-boot" : "^1.1.1",
+    "tailwindcss" : "^4.3.4",
+    "vite" : "^8.3.5"
+  },
+  "name" : "spendleaf",
+  "private" : true,
+  "scripts" : {
+    "dev" : "vite",
+    "dev-open" : "vite --open http://localhost:8080",
+    "build" : "vite build"
+  },
+  "type" : "module"
+}

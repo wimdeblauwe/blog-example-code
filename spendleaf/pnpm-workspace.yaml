@@ -1,0 +1,11 @@
+# Packages that are allowed to run their install scripts (pnpm 11+)
+allowBuilds:
+  '@tailwindcss/oxide': true
+  'lightningcss': true
+  'esbuild': true
+
+# Same list for pnpm 10, which does not support `allowBuilds` yet
+onlyBuiltDependencies:
+  - '@tailwindcss/oxide'
+  - 'lightningcss'
+  - 'esbuild'
