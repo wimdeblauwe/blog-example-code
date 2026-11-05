@@ -19,6 +19,19 @@
     <sl:sidebar variant="inset" collapsible="icon">
         <sl:sidebar-header>
             <!-- app name/logo -->
+            <sl:sidebar-menu>
+                <sl:sidebar-menu-item>
+                    <sl:sidebar-menu-button th:href="@{/}" size="lg" tooltip="Spendleaf">
+                        <sl:slot name="icon-start">
+                      <span class="grid size-8 shrink-0 place-items-center rounded-md bg-primary text-primary-foreground">
+                          <sl:icon name="leaf" size="16"/>
+                      </span>
+                        </sl:slot>
+                        <strong>Spendleaf</strong>
+                        <small>Expense tracker</small>
+                    </sl:sidebar-menu-button>
+                </sl:sidebar-menu-item>
+            </sl:sidebar-menu>
         </sl:sidebar-header>
         <sl:sidebar-content>
             <!-- menu: next step (icons, #slNav.current) -->
