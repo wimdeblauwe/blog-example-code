@@ -34,7 +34,38 @@
             </sl:sidebar-menu>
         </sl:sidebar-header>
         <sl:sidebar-content>
-            <!-- menu: next step (icons, #slNav.current) -->
+            <sl:sidebar-group id="nav-main">
+                <sl:sidebar-group-label>Expenses</sl:sidebar-group-label>
+                <sl:sidebar-group-content>
+                    <sl:sidebar-menu>
+                        <sl:sidebar-menu-item>
+                            <sl:sidebar-menu-button th:href="@{/}" th:active="${#slNav.current('/')}" tooltip="Dashboard">
+                                <sl:slot name="icon-start"><sl:icon name="layout-dashboard"/></sl:slot>
+                                Dashboard
+                            </sl:sidebar-menu-button>
+                        </sl:sidebar-menu-item>
+                        <sl:sidebar-menu-item>
+                            <sl:sidebar-menu-button th:href="@{/expenses}" th:active="${#slNav.current('/expenses')}" tooltip="My expenses">
+                                <sl:slot name="icon-start"><sl:icon name="receipt"/></sl:slot>
+                                My expenses
+                            </sl:sidebar-menu-button>
+                        </sl:sidebar-menu-item>
+                    </sl:sidebar-menu>
+                </sl:sidebar-group-content>
+            </sl:sidebar-group>
+            <sl:sidebar-group id="nav-manage">
+                <sl:sidebar-group-label>Manage</sl:sidebar-group-label>
+                <sl:sidebar-group-content>
+                    <sl:sidebar-menu>
+                        <sl:sidebar-menu-item>
+                            <sl:sidebar-menu-button th:href="@{/approvals}" th:active="${#slNav.current('/approvals')}" tooltip="Approvals">
+                                <sl:slot name="icon-start"><sl:icon name="circle-check"/></sl:slot>
+                                Approvals
+                            </sl:sidebar-menu-button>
+                        </sl:sidebar-menu-item>
+                    </sl:sidebar-menu>
+                </sl:sidebar-group-content>
+            </sl:sidebar-group>
         </sl:sidebar-content>
     </sl:sidebar>
     <sl:sidebar-inset>
