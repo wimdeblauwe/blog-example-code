@@ -12,7 +12,7 @@
 </th:block>
 <div id="page-content">
     <!--/*@thymesVar id="page" type="org.springframework.data.domain.Page<com.wimdeblauwe.examples.spendleaf.expense.Expense>"*/-->
-    <sl:card th:if="${page.totalElements == 0}">
+    <sl:card id="no-expenses" th:if="${page.totalElements == 0}">
         <sl:card-content>
             <sl:empty>
                 <sl:empty-header>
