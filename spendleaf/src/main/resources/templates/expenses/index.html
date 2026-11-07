@@ -11,7 +11,57 @@
     </sl:breadcrumb-item>
 </th:block>
 <div id="page-content">
-    Expenses content
+    <!--/*@thymesVar id="page" type="org.springframework.data.domain.Page<com.wimdeblauwe.examples.spendleaf.expense.Expense>"*/-->
+    <sl:card th:if="${page.totalElements == 0}">
+        <sl:card-content>
+            <sl:empty>
+                <sl:empty-header>
+                    <sl:empty-media variant="icon"><sl:icon name="receipt"/></sl:empty-media>
+                    <sl:empty-title level="2">No expenses yet</sl:empty-title>
+                    <sl:empty-description>Add your first expense.</sl:empty-description>
+                </sl:empty-header>
+                <sl:empty-content>
+                    <sl:button as="a" th:href="@{/expenses/create}">New expense</sl:button>
+                </sl:empty-content>
+            </sl:empty>
+        </sl:card-content>
+    </sl:card>
+
+    <th:block th:unless="${page.totalElements == 0}">
+        <sl:table id="expenses-table" th:page="${page}">
+            <thead>
+            <tr>
+                <sl:table-head sort="description">Description</sl:table-head>
+                <sl:table-head sort="date">Date</sl:table-head>
+                <sl:table-head sort="category">Category</sl:table-head>
+                <sl:table-head sort="project">Project</sl:table-head>
+                <sl:table-head sort="amount" align="end">Amount</sl:table-head>
+                <sl:table-head sort="status">Status</sl:table-head>
+            </tr>
+            </thead>
+            <tbody th:with="statusVariants=${ {DRAFT:'outline', SUBMITTED:'secondary', APPROVED:'default', REJECTED:'destructive'} }">
+            <tr th:each="expense : ${page}" th:id="|expense-${expense.id.asString()}|">
+                <td th:text="${expense.description}">Hotel Ghent, 2 nights</td>
+                <td th:text="${#temporals.format(expense.date, 'd MMM yyyy')}">10 Nov 2026</td>
+                <td th:text="#{|ExpenseCategory.${expense.category}|}">Travel</td>
+                <td th:text="${expense.project} ?: '—'">Atlas</td>
+                <td data-align="end"
+                    th:text="|€${#numbers.formatDecimal(expense.amount.value, 1, 'DEFAULT', 2, 'DEFAULT')}|">€238.00</td>
+                <td>
+                    <sl:badge th:variant="${statusVariants[expense.status.name()]}">[[#{|ExpenseStatus.${expense.status}|}]]</sl:badge>
+                </td>
+            </tr>
+            </tbody>
+        </sl:table>
+
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
+            <sl:pagination-summary th:page="${page}"/>
+            <div class="flex flex-wrap items-center gap-6">
+                <sl:pagination-size th:page="${page}"/>
+                <sl:pagination th:page="${page}" class="m-0 w-auto"/>
+            </div>
+        </div>
+    </th:block>
 </div>
 </body>
 </html>

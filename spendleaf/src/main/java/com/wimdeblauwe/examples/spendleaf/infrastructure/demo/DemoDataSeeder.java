@@ -19,10 +19,10 @@ import java.time.LocalDate;
 import java.util.Random;
 
 /**
- * Fills an empty database with realistic looking expenses when running with the {@code local} profile.
+ * Fills an empty database with realistic looking expenses.
  */
 @Component
-@Profile("local")
+@Profile("init")
 class DemoDataSeeder implements ApplicationRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(DemoDataSeeder.class);
     private static final int NUMBER_OF_EXPENSES = 120;

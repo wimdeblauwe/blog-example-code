@@ -25,6 +25,7 @@ import static java.util.Comparator.nullsLast;
 public class InMemoryExpenseRepository implements ExpenseRepository {
     // Nulls last, so a descending sort puts them first: the same as PostgreSQL does by default
     private static final Map<String, Comparator<Expense>> COMPARATORS = Map.of(
+            "id", comparing(expense -> expense.getId().getId()),
             "description", comparing(Expense::getDescription),
             "amount", comparing(expense -> expense.getAmount().value()),
             "date", comparing(Expense::getDate),
