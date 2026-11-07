@@ -25,7 +25,7 @@ import java.util.Random;
 @Profile("local")
 class DemoDataSeeder implements ApplicationRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(DemoDataSeeder.class);
-    private static final int NUMBER_OF_EXPENSES = 48;
+    private static final int NUMBER_OF_EXPENSES = 120;
     private static final String[] PROJECTS = {"Atlas", "Borealis", "Cygnus", "Draco"};
 
     private final ExpenseRepository repository;
