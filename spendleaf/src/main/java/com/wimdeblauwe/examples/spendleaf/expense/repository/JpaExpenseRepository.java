@@ -4,6 +4,7 @@ import com.wimdeblauwe.examples.spendleaf.expense.Expense;
 import com.wimdeblauwe.examples.spendleaf.expense.ExpenseId;
 import com.wimdeblauwe.examples.spendleaf.expense.ExpenseNotFoundException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -37,8 +38,10 @@ class JpaExpenseRepository implements ExpenseRepository {
 
     @Override
     public Page<Expense> findAll(Pageable pageable) {
-        return repository.findAllWithProject(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-                                                            sortProjectByName(pageable.getSort())));
+        Page<Expense> page = repository.findAllWithProject(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                                                                          sortProjectByName(pageable.getSort())));
+        // Return the page with the sort that was asked for, so the table still sees it sorted on "project"
+        return new PageImpl<>(page.getContent(), pageable, page.getTotalElements());
     }
 
     @Override

@@ -128,6 +128,15 @@ class JpaExpenseRepositoryTest {
     }
 
     @Test
+    void testFindAll_sortedByProjectNameKeepsTheRequestedSort() {
+        Sort sort = Sort.by("project").descending();
+
+        Page<Expense> page = repository.findAll(PageRequest.of(0, 10, sort));
+
+        assertThat(page.getSort()).isEqualTo(sort);
+    }
+
+    @Test
     void testFindAll_sortedByProjectNameDescending() {
         ProjectId atlas = saveProject("Atlas");
         ProjectId borealis = saveProject("Borealis");
