@@ -87,5 +87,9 @@
         </div>
     </sl:sidebar-inset>
 </sl:sidebar-provider>
+<sl:toaster>
+    <sl:toast th:each="toast : ${toasts}" th:title="${toast.title}" th:description="${toast.description}"
+              th:variant="${toast.variant}" th:duration="${toast.duration}"/>
+</sl:toaster>
 </body>
 </html>

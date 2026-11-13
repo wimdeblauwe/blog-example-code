@@ -12,6 +12,7 @@ import com.wimdeblauwe.examples.spendleaf.project.ProjectId;
 import com.wimdeblauwe.examples.spendleaf.project.repository.InMemoryProjectRepository;
 import com.wimdeblauwe.examples.spendleaf.project.repository.ProjectRepository;
 import com.wimdeblauwe.examples.spendleaf.project.usecase.GetProjects;
+import io.github.wimdeblauwe.shadleaf.toast.Toast;
 import org.htmlunit.WebClient;
 import org.htmlunit.html.HtmlPage;
 import org.htmlunit.html.HtmlTable;
@@ -34,6 +35,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -195,7 +197,9 @@ class ExpenseControllerTest {
                                 .param("billable", "true")
                                 .param("notes", ""))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/expenses"));
+                .andExpect(redirectedUrl("/expenses"))
+                .andExpect(flash().attribute("toasts", List.of(
+                        Toast.success("Expense created").withDescription("Hotel Ghent, 2 nights"))));
 
         Expense expense = repository.findAll(PageRequest.of(0, 10)).getContent().getFirst();
         assertThat(expense.getDescription()).isEqualTo("Hotel Ghent, 2 nights");
@@ -236,6 +240,17 @@ class ExpenseControllerTest {
                 .andExpect(model().attributeHasFieldErrorCode("expense", "category", "NotNull"));
 
         assertThat(repository.findAll(PageRequest.of(0, 10)).getContent()).isEmpty();
+    }
+
+    @Test
+    void testIndex_showsToastFromFlashAttribute() throws Exception {
+        String html = mockMvc.perform(get("/expenses")
+                                              .flashAttr("toasts", List.of(Toast.success("Expense created")
+                                                                                   .withDescription("Hotel Ghent, 2 nights"))))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        assertThat(html).contains("Expense created").contains("Hotel Ghent, 2 nights");
     }
 
     @Test

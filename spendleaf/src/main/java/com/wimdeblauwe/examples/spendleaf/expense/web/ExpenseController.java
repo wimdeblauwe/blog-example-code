@@ -1,11 +1,13 @@
 package com.wimdeblauwe.examples.spendleaf.expense.web;
 
+import com.wimdeblauwe.examples.spendleaf.expense.Expense;
 import com.wimdeblauwe.examples.spendleaf.expense.ExpenseCategory;
 import com.wimdeblauwe.examples.spendleaf.expense.usecase.CreateExpense;
 import com.wimdeblauwe.examples.spendleaf.expense.usecase.GetExpenses;
 import com.wimdeblauwe.examples.spendleaf.infrastructure.web.IdAndName;
 import com.wimdeblauwe.examples.spendleaf.infrastructure.web.IdAndNameCollection;
 import com.wimdeblauwe.examples.spendleaf.project.usecase.GetProjects;
+import io.github.wimdeblauwe.shadleaf.toast.Toast;
 import jakarta.validation.Valid;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
@@ -82,12 +85,15 @@ class ExpenseController {
 
     @PostMapping("/create")
     public String doCreateExpense(@Valid @ModelAttribute("expense") CreateExpenseFormData formData,
-                                  BindingResult bindingResult) {
+                                  BindingResult bindingResult,
+                                  RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "expenses/edit";
         }
 
-        createExpense.execute(formData.toParameters());
+        Expense expense = createExpense.execute(formData.toParameters());
+        redirectAttributes.addFlashAttribute("toasts", List.of(
+                Toast.success("Expense created").withDescription(expense.getDescription())));
         return "redirect:/expenses";
     }
 
