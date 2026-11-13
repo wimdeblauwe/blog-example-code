@@ -1,0 +1,94 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sl="https://shadleaf.dev/sl"
+      th:replace="~{layout/main :: layout('New expense', ~{::breadcrumb}, ~{::#page-content})}">
+<body>
+<th:block th:ref="breadcrumb">
+    <sl:breadcrumb-item>
+        <sl:breadcrumb-link th:href="@{/}">Dashboard</sl:breadcrumb-link>
+    </sl:breadcrumb-item>
+    <sl:breadcrumb-separator/>
+    <sl:breadcrumb-item>
+        <sl:breadcrumb-link th:href="@{/expenses}">My expenses</sl:breadcrumb-link>
+    </sl:breadcrumb-item>
+    <sl:breadcrumb-separator/>
+    <sl:breadcrumb-item>
+        <sl:breadcrumb-page>New expense</sl:breadcrumb-page>
+    </sl:breadcrumb-item>
+</th:block>
+<div id="page-content">
+    <!--/*@thymesVar id="expense" type="com.wimdeblauwe.examples.spendleaf.expense.web.CreateExpenseFormData"*/-->
+    <!--/*@thymesVar id="projects" type="com.wimdeblauwe.examples.spendleaf.infrastructure.web.IdAndNameCollection"*/-->
+    <!--/*@thymesVar id="categories" type="java.util.List<com.wimdeblauwe.examples.spendleaf.expense.ExpenseCategory>"*/-->
+    <form id="expense-form" th:object="${expense}" th:action="@{/expenses/create}" method="post" novalidate
+          class="max-w-2xl">
+        <sl:card>
+            <sl:card-content>
+                <sl:field-group>
+                    <sl:field th:field="*{description}">
+                        <sl:field-label>Description</sl:field-label>
+                        <sl:input placeholder="Hotel Ghent, 2 nights"/>
+                        <sl:field-error/>
+                    </sl:field>
+
+                    <div class="grid gap-6 sm:grid-cols-2">
+                        <sl:field th:field="*{amount}">
+                            <sl:field-label>Amount</sl:field-label>
+                            <sl:input-group>
+                                <sl:input-group-input type="number" step="0.01" min="0.01" inputmode="decimal"
+                                                      placeholder="0.00"/>
+                                <sl:input-group-addon><sl:input-group-text>€</sl:input-group-text></sl:input-group-addon>
+                            </sl:input-group>
+                            <sl:field-error/>
+                        </sl:field>
+
+                        <sl:field th:field="*{date}">
+                            <sl:field-label>Date</sl:field-label>
+                            <sl:date-picker/>
+                            <sl:field-error/>
+                        </sl:field>
+                    </div>
+
+                    <div class="grid gap-6 sm:grid-cols-2">
+                        <sl:field th:field="*{category}">
+                            <sl:field-label>Category</sl:field-label>
+                            <sl:select placeholder="Select a category">
+                                <sl:select-item th:each="category : ${categories}"
+                                                th:value="${category}">[[#{|ExpenseCategory.${category}|}]]</sl:select-item>
+                            </sl:select>
+                            <sl:field-error/>
+                        </sl:field>
+
+                        <sl:field th:field="*{project}">
+                            <sl:field-label>Project</sl:field-label>
+                            <sl:combobox placeholder="No project" show-clear>
+                                <sl:combobox-item th:each="project : ${projects}"
+                                                  th:value="${project.id}">[[${project.name}]]</sl:combobox-item>
+                            </sl:combobox>
+                            <sl:field-error/>
+                        </sl:field>
+                    </div>
+
+                    <sl:field th:field="*{billable}" orientation="horizontal">
+                        <sl:switch/>
+                        <sl:field-content>
+                            <sl:field-label>Billable</sl:field-label>
+                            <sl:field-description>Charge this expense to the client of the project.</sl:field-description>
+                        </sl:field-content>
+                    </sl:field>
+
+                    <sl:field th:field="*{notes}">
+                        <sl:field-label>Notes</sl:field-label>
+                        <sl:textarea rows="3"/>
+                        <sl:field-description>Optional. Anything the approver should know.</sl:field-description>
+                        <sl:field-error/>
+                    </sl:field>
+                </sl:field-group>
+            </sl:card-content>
+            <sl:card-footer class="justify-end gap-2">
+                <sl:button as="a" variant="outline" th:href="@{/expenses}">Cancel</sl:button>
+                <sl:button type="submit">Create expense</sl:button>
+            </sl:card-footer>
+        </sl:card>
+    </form>
+</div>
+</body>
+</html>

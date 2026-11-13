@@ -29,6 +29,9 @@
     </sl:card>
 
     <th:block th:unless="${page.totalElements == 0}">
+        <div class="mb-4 flex justify-end">
+            <sl:button as="a" th:href="@{/expenses/create}">New expense</sl:button>
+        </div>
         <sl:table id="expenses-table" th:page="${page}">
             <thead>
             <tr>

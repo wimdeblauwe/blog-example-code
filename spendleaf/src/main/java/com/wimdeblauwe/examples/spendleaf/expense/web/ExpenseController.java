@@ -1,20 +1,29 @@
 package com.wimdeblauwe.examples.spendleaf.expense.web;
 
+import com.wimdeblauwe.examples.spendleaf.expense.ExpenseCategory;
+import com.wimdeblauwe.examples.spendleaf.expense.usecase.CreateExpense;
 import com.wimdeblauwe.examples.spendleaf.expense.usecase.GetExpenses;
 import com.wimdeblauwe.examples.spendleaf.infrastructure.web.IdAndName;
 import com.wimdeblauwe.examples.spendleaf.infrastructure.web.IdAndNameCollection;
 import com.wimdeblauwe.examples.spendleaf.project.usecase.GetProjects;
+import jakarta.validation.Valid;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -24,11 +33,19 @@ class ExpenseController {
     private static final Set<String> SORTABLE = Set.of("description", "date", "category", "project", "amount", "status");
 
     private final GetExpenses getExpenses;
+    private final CreateExpense createExpense;
     private final GetProjects getProjects;
 
-    ExpenseController(GetExpenses getExpenses, GetProjects getProjects) {
+    ExpenseController(GetExpenses getExpenses, CreateExpense createExpense, GetProjects getProjects) {
         this.getExpenses = getExpenses;
+        this.createExpense = createExpense;
         this.getProjects = getProjects;
+    }
+
+    @InitBinder
+    void initBinder(WebDataBinder binder) {
+        // Trims text input, and turns an empty field into null
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
     @ModelAttribute("projects")
@@ -36,6 +53,11 @@ class ExpenseController {
         return new IdAndNameCollection(getProjects.execute().stream()
                                                .map(project -> new IdAndName(project.getId().getId(), project.getName()))
                                                .toList());
+    }
+
+    @ModelAttribute("categories")
+    public List<ExpenseCategory> categories() {
+        return List.of(ExpenseCategory.values());
     }
 
     @GetMapping
@@ -50,6 +72,23 @@ class ExpenseController {
         }
         model.addAttribute("page", getExpenses.execute(withStableOrder(pageable)));
         return "expenses/index";
+    }
+
+    @GetMapping("/create")
+    public String createExpenseForm(Model model) {
+        model.addAttribute("expense", CreateExpenseFormData.withDefaults());
+        return "expenses/edit";
+    }
+
+    @PostMapping("/create")
+    public String doCreateExpense(@Valid @ModelAttribute("expense") CreateExpenseFormData formData,
+                                  BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "expenses/edit";
+        }
+
+        createExpense.execute(formData.toParameters());
+        return "redirect:/expenses";
     }
 
     private static boolean isSortable(Sort sort) {

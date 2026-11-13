@@ -1,9 +1,11 @@
 package com.wimdeblauwe.examples.spendleaf.expense.web;
 
 import com.wimdeblauwe.examples.spendleaf.expense.Amount;
+import com.wimdeblauwe.examples.spendleaf.expense.Expense;
 import com.wimdeblauwe.examples.spendleaf.expense.ExpenseCategory;
 import com.wimdeblauwe.examples.spendleaf.expense.repository.ExpenseRepository;
 import com.wimdeblauwe.examples.spendleaf.expense.repository.InMemoryExpenseRepository;
+import com.wimdeblauwe.examples.spendleaf.expense.usecase.CreateExpense;
 import com.wimdeblauwe.examples.spendleaf.expense.usecase.GetExpenses;
 import com.wimdeblauwe.examples.spendleaf.project.Project;
 import com.wimdeblauwe.examples.spendleaf.project.ProjectId;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -27,7 +30,10 @@ import java.util.List;
 
 import static com.wimdeblauwe.examples.spendleaf.expense.ExpenseMother.expense;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -163,6 +169,75 @@ class ExpenseControllerTest {
                 .andExpect(redirectedUrl("http://localhost/expenses"));
     }
 
+    @Test
+    void testCreateExpenseForm() throws Exception {
+        mockMvc.perform(get("/expenses/create"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("expenses/edit"))
+                .andExpect(model().attribute("expense", hasProperty("date", equalTo(LocalDate.now()))));
+
+        HtmlPage page = webClient.getPage("/expenses/create");
+        assertThat(page.getElementById("expense-form")).isNotNull();
+        assertThat(page.getElementById("description").getAttribute("name")).isEqualTo("description");
+    }
+
+    @Test
+    void testCreateExpense() throws Exception {
+        ProjectId projectId = projectRepository.nextId();
+        projectRepository.save(new Project(projectId, "Atlas"));
+
+        mockMvc.perform(post("/expenses/create")
+                                .param("description", "  Hotel Ghent, 2 nights  ")
+                                .param("amount", "238.5")
+                                .param("date", "2026-11-10")
+                                .param("category", "TRAVEL")
+                                .param("project", projectId.asString())
+                                .param("billable", "true")
+                                .param("notes", ""))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/expenses"));
+
+        Expense expense = repository.findAll(PageRequest.of(0, 10)).getContent().getFirst();
+        assertThat(expense.getDescription()).isEqualTo("Hotel Ghent, 2 nights");
+        assertThat(expense.getAmount()).isEqualTo(Amount.ofEuros("238.50"));
+        assertThat(expense.getDate()).isEqualTo(LocalDate.of(2026, 11, 10));
+        assertThat(expense.getCategory()).isEqualTo(ExpenseCategory.TRAVEL);
+        assertThat(expense.getProject()).isEqualTo(projectId);
+        assertThat(expense.isBillable()).isTrue();
+        assertThat(expense.getNotes()).isNull();
+    }
+
+    @Test
+    void testCreateExpense_withoutProject() throws Exception {
+        mockMvc.perform(post("/expenses/create")
+                                .param("description", "Book")
+                                .param("amount", "35")
+                                .param("date", "2026-11-10")
+                                .param("category", "TRAINING")
+                                .param("project", ""))
+                .andExpect(status().is3xxRedirection());
+
+        Expense expense = repository.findAll(PageRequest.of(0, 10)).getContent().getFirst();
+        assertThat(expense.getProject()).isNull();
+        assertThat(expense.isBillable()).isFalse();
+    }
+
+    @Test
+    void testCreateExpense_validationErrors() throws Exception {
+        mockMvc.perform(post("/expenses/create")
+                                .param("description", "   ")
+                                .param("amount", "abc")
+                                .param("date", LocalDate.now().plusDays(1).toString()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("expenses/edit"))
+                .andExpect(model().attributeHasFieldErrorCode("expense", "description", "NotBlank"))
+                .andExpect(model().attributeHasFieldErrorCode("expense", "amount", "typeMismatch"))
+                .andExpect(model().attributeHasFieldErrorCode("expense", "date", "PastOrPresent"))
+                .andExpect(model().attributeHasFieldErrorCode("expense", "category", "NotNull"));
+
+        assertThat(repository.findAll(PageRequest.of(0, 10)).getContent()).isEmpty();
+    }
+
     private void saveExpense(String description, LocalDate date, String amount) {
         repository.save(expense().id(repository.nextId())
                                 .description(description)
@@ -193,6 +268,11 @@ class ExpenseControllerTest {
         @Bean
         GetExpenses getExpenses(ExpenseRepository expenseRepository) {
             return new GetExpenses(expenseRepository);
+        }
+
+        @Bean
+        CreateExpense createExpense(ExpenseRepository expenseRepository) {
+            return new CreateExpense(expenseRepository);
         }
 
         @Bean
