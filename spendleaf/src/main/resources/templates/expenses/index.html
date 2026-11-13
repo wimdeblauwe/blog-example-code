@@ -45,7 +45,10 @@
             </thead>
             <tbody th:with="statusVariants=${ {DRAFT:'outline', SUBMITTED:'secondary', APPROVED:'default', REJECTED:'destructive'} }">
             <tr th:each="expense : ${page}" th:id="|expense-${expense.id.asString()}|">
-                <td th:text="${expense.description}">Hotel Ghent, 2 nights</td>
+                <td>
+                    <a th:href="@{/expenses/{id}(id=${expense.id.asString()})}" th:text="${expense.description}"
+                       class="font-medium hover:underline">Hotel Ghent, 2 nights</a>
+                </td>
                 <td th:text="${#temporals.format(expense.date, 'd MMM yyyy')}">10 Nov 2026</td>
                 <td th:text="#{|ExpenseCategory.${expense.category}|}">Travel</td>
                 <td th:text="${projects.nameOf(expense.project)} ?: '—'">Atlas</td>

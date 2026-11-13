@@ -3,9 +3,12 @@ package com.wimdeblauwe.examples.spendleaf.expense.web;
 import com.wimdeblauwe.examples.spendleaf.expense.Amount;
 import com.wimdeblauwe.examples.spendleaf.expense.Expense;
 import com.wimdeblauwe.examples.spendleaf.expense.ExpenseCategory;
+import com.wimdeblauwe.examples.spendleaf.expense.ExpenseId;
 import com.wimdeblauwe.examples.spendleaf.expense.repository.ExpenseRepository;
 import com.wimdeblauwe.examples.spendleaf.expense.repository.InMemoryExpenseRepository;
 import com.wimdeblauwe.examples.spendleaf.expense.usecase.CreateExpense;
+import com.wimdeblauwe.examples.spendleaf.expense.usecase.EditExpense;
+import com.wimdeblauwe.examples.spendleaf.expense.usecase.GetExpense;
 import com.wimdeblauwe.examples.spendleaf.expense.usecase.GetExpenses;
 import com.wimdeblauwe.examples.spendleaf.project.Project;
 import com.wimdeblauwe.examples.spendleaf.project.ProjectId;
@@ -28,6 +31,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import static com.wimdeblauwe.examples.spendleaf.expense.ExpenseMother.expense;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -272,6 +276,75 @@ class ExpenseControllerTest {
                 .contains("Select a category.");
     }
 
+    @Test
+    void testEditExpenseForm() throws Exception {
+        ProjectId projectId = projectRepository.nextId();
+        projectRepository.save(new Project(projectId, "Atlas"));
+        ExpenseId id = repository.nextId();
+        repository.save(expense().id(id)
+                                .description("Hotel Ghent, 2 nights")
+                                .amount(Amount.ofEuros("238.00"))
+                                .date(LocalDate.of(2026, 11, 10))
+                                .category(ExpenseCategory.TRAVEL)
+                                .project(projectId)
+                                .billable(true)
+                                .build());
+
+        HtmlPage page = webClient.getPage("/expenses/" + id.asString());
+
+        assertThat(page.getTitleText()).isEqualTo("Edit expense - Spendleaf");
+        assertThat(page.getElementById("expense-form").getAttribute("action")).isEqualTo("/expenses/" + id.asString());
+        assertThat(page.getElementById("description").getAttribute("value")).isEqualTo("Hotel Ghent, 2 nights");
+        assertThat(page.getElementById("amount").getAttribute("value")).isEqualTo("238.00");
+        assertThat(page.getElementById("date").getAttribute("value")).isEqualTo("2026-11-10");
+        assertThat(page.getElementById("billable").hasAttribute("checked")).isTrue();
+        assertThat(page.getElementById("project").asXml()).contains("value=\"" + projectId.asString() + "\" selected=\"selected\"");
+    }
+
+    @Test
+    void testEditExpenseForm_unknownExpense() throws Exception {
+        mockMvc.perform(get("/expenses/" + UUID.randomUUID()))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testEditExpense() throws Exception {
+        ExpenseId id = repository.nextId();
+        repository.save(expense().id(id).description("Taxi").billable(true).build());
+
+        mockMvc.perform(post("/expenses/" + id.asString())
+                                .param("description", "Taxi to the airport")
+                                .param("amount", "42.5")
+                                .param("date", "2026-11-12")
+                                .param("category", "TRAVEL")
+                                .param("_billable", "on"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/expenses"))
+                .andExpect(flash().attribute("toasts", List.of(
+                        Toast.success("Expense updated").withDescription("Taxi to the airport"))));
+
+        Expense expense = repository.getById(id);
+        assertThat(expense.getDescription()).isEqualTo("Taxi to the airport");
+        assertThat(expense.getAmount()).isEqualTo(Amount.ofEuros("42.50"));
+        assertThat(expense.getDate()).isEqualTo(LocalDate.of(2026, 11, 12));
+        assertThat(expense.isBillable()).isFalse();
+    }
+
+    @Test
+    void testEditExpense_validationErrors() throws Exception {
+        ExpenseId id = repository.nextId();
+        repository.save(expense().id(id).description("Taxi").build());
+
+        String html = mockMvc.perform(post("/expenses/" + id.asString()).param("description", ""))
+                .andExpect(status().isOk())
+                .andExpect(view().name("expenses/edit"))
+                .andExpect(model().attributeHasFieldErrorCode("expense", "description", "NotBlank"))
+                .andReturn().getResponse().getContentAsString();
+
+        assertThat(html).contains("action=\"/expenses/" + id.asString() + "\"");
+        assertThat(repository.getById(id).getDescription()).isEqualTo("Taxi");
+    }
+
     private void saveExpense(String description, LocalDate date, String amount) {
         repository.save(expense().id(repository.nextId())
                                 .description(description)
@@ -305,8 +378,18 @@ class ExpenseControllerTest {
         }
 
         @Bean
+        GetExpense getExpense(ExpenseRepository expenseRepository) {
+            return new GetExpense(expenseRepository);
+        }
+
+        @Bean
         CreateExpense createExpense(ExpenseRepository expenseRepository) {
             return new CreateExpense(expenseRepository);
+        }
+
+        @Bean
+        EditExpense editExpense(ExpenseRepository expenseRepository) {
+            return new EditExpense(expenseRepository);
         }
 
         @Bean

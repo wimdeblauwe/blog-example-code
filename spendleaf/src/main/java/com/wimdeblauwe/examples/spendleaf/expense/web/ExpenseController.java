@@ -2,8 +2,12 @@ package com.wimdeblauwe.examples.spendleaf.expense.web;
 
 import com.wimdeblauwe.examples.spendleaf.expense.Expense;
 import com.wimdeblauwe.examples.spendleaf.expense.ExpenseCategory;
+import com.wimdeblauwe.examples.spendleaf.expense.ExpenseId;
 import com.wimdeblauwe.examples.spendleaf.expense.usecase.CreateExpense;
+import com.wimdeblauwe.examples.spendleaf.expense.usecase.EditExpense;
+import com.wimdeblauwe.examples.spendleaf.expense.usecase.GetExpense;
 import com.wimdeblauwe.examples.spendleaf.expense.usecase.GetExpenses;
+import com.wimdeblauwe.examples.spendleaf.infrastructure.web.EditMode;
 import com.wimdeblauwe.examples.spendleaf.infrastructure.web.IdAndName;
 import com.wimdeblauwe.examples.spendleaf.infrastructure.web.IdAndNameCollection;
 import com.wimdeblauwe.examples.spendleaf.project.usecase.GetProjects;
@@ -21,6 +25,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -28,6 +33,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/expenses")
@@ -36,12 +42,20 @@ class ExpenseController {
     private static final Set<String> SORTABLE = Set.of("description", "date", "category", "project", "amount", "status");
 
     private final GetExpenses getExpenses;
+    private final GetExpense getExpense;
     private final CreateExpense createExpense;
+    private final EditExpense editExpense;
     private final GetProjects getProjects;
 
-    ExpenseController(GetExpenses getExpenses, CreateExpense createExpense, GetProjects getProjects) {
+    ExpenseController(GetExpenses getExpenses,
+                      GetExpense getExpense,
+                      CreateExpense createExpense,
+                      EditExpense editExpense,
+                      GetProjects getProjects) {
         this.getExpenses = getExpenses;
+        this.getExpense = getExpense;
         this.createExpense = createExpense;
+        this.editExpense = editExpense;
         this.getProjects = getProjects;
     }
 
@@ -80,20 +94,48 @@ class ExpenseController {
     @GetMapping("/create")
     public String createExpenseForm(Model model) {
         model.addAttribute("expense", CreateExpenseFormData.withDefaults());
+        model.addAttribute("editMode", EditMode.CREATE);
         return "expenses/edit";
     }
 
     @PostMapping("/create")
     public String doCreateExpense(@Valid @ModelAttribute("expense") CreateExpenseFormData formData,
                                   BindingResult bindingResult,
+                                  Model model,
                                   RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("editMode", EditMode.CREATE);
             return "expenses/edit";
         }
 
         Expense expense = createExpense.execute(formData.toParameters());
         redirectAttributes.addFlashAttribute("toasts", List.of(
                 Toast.success("Expense created").withDescription(expense.getDescription())));
+        return "redirect:/expenses";
+    }
+
+    @GetMapping("/{id}")
+    public String editExpenseForm(@PathVariable UUID id, Model model) {
+        Expense expense = getExpense.execute(new ExpenseId(id));
+        model.addAttribute("expense", EditExpenseFormData.fromExpense(expense));
+        model.addAttribute("editMode", EditMode.UPDATE);
+        return "expenses/edit";
+    }
+
+    @PostMapping("/{id}")
+    public String doEditExpense(@PathVariable UUID id,
+                                @Valid @ModelAttribute("expense") EditExpenseFormData formData,
+                                BindingResult bindingResult,
+                                Model model,
+                                RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("editMode", EditMode.UPDATE);
+            return "expenses/edit";
+        }
+
+        Expense expense = editExpense.execute(new ExpenseId(id), formData.toParameters());
+        redirectAttributes.addFlashAttribute("toasts", List.of(
+                Toast.success("Expense updated").withDescription(expense.getDescription())));
         return "redirect:/expenses";
     }
 

@@ -1,5 +1,5 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sl="https://shadleaf.dev/sl"
-      th:replace="~{layout/main :: layout('New expense', ~{::breadcrumb}, ~{::#page-content})}">
+      th:replace="~{layout/main :: layout(${editMode.name() == 'UPDATE'} ? 'Edit expense' : 'New expense', ~{::breadcrumb}, ~{::#page-content})}">
 <body>
 <th:block th:ref="breadcrumb">
     <sl:breadcrumb-item>
@@ -11,14 +11,16 @@
     </sl:breadcrumb-item>
     <sl:breadcrumb-separator/>
     <sl:breadcrumb-item>
-        <sl:breadcrumb-page>New expense</sl:breadcrumb-page>
+        <sl:breadcrumb-page>[[${editMode.name() == 'UPDATE'} ? 'Edit expense' : 'New expense']]</sl:breadcrumb-page>
     </sl:breadcrumb-item>
 </th:block>
 <div id="page-content">
-    <!--/*@thymesVar id="expense" type="com.wimdeblauwe.examples.spendleaf.expense.web.CreateExpenseFormData"*/-->
+    <!--/*@thymesVar id="expense" type="com.wimdeblauwe.examples.spendleaf.expense.web.AbstractExpenseFormData"*/-->
+    <!--/*@thymesVar id="editMode" type="com.wimdeblauwe.examples.spendleaf.infrastructure.web.EditMode"*/-->
     <!--/*@thymesVar id="projects" type="com.wimdeblauwe.examples.spendleaf.infrastructure.web.IdAndNameCollection"*/-->
     <!--/*@thymesVar id="categories" type="java.util.List<com.wimdeblauwe.examples.spendleaf.expense.ExpenseCategory>"*/-->
-    <form id="expense-form" th:object="${expense}" th:action="@{/expenses/create}" method="post" novalidate
+    <form id="expense-form" th:object="${expense}" method="post" novalidate
+          th:action="${editMode.name() == 'UPDATE'} ? @{/expenses/{id}(id=${expense.id})} : @{/expenses/create}"
           class="max-w-2xl">
         <sl:card>
             <sl:card-content>
@@ -86,7 +88,7 @@
             </sl:card-content>
             <sl:card-footer class="justify-end gap-2">
                 <sl:button as="a" variant="outline" th:href="@{/expenses}">Cancel</sl:button>
-                <sl:button type="submit">Create expense</sl:button>
+                <sl:button type="submit">[[${editMode.name() == 'UPDATE'} ? 'Save expense' : 'Create expense']]</sl:button>
             </sl:card-footer>
         </sl:card>
     </form>
