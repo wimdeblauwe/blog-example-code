@@ -238,6 +238,25 @@ class ExpenseControllerTest {
         assertThat(repository.findAll(PageRequest.of(0, 10)).getContent()).isEmpty();
     }
 
+    @Test
+    void testCreateExpenseForm_noErrorSummary() throws Exception {
+        HtmlPage page = webClient.getPage("/expenses/create");
+
+        assertThat(page.getElementById("expense-errors")).isNull();
+    }
+
+    @Test
+    void testCreateExpense_errorSummaryAndMessages() throws Exception {
+        String html = mockMvc.perform(post("/expenses/create").param("description", ""))
+                .andReturn().getResponse().getContentAsString();
+
+        assertThat(html).contains("id=\"expense-errors\"")
+                .contains("Enter a description.")
+                .contains("Enter an amount, like 12.50.")
+                .contains("Pick the date of the expense.")
+                .contains("Select a category.");
+    }
+
     private void saveExpense(String description, LocalDate date, String amount) {
         repository.save(expense().id(repository.nextId())
                                 .description(description)
