@@ -5,6 +5,11 @@ import com.wimdeblauwe.examples.spendleaf.expense.ExpenseCategory;
 import com.wimdeblauwe.examples.spendleaf.expense.repository.ExpenseRepository;
 import com.wimdeblauwe.examples.spendleaf.expense.repository.InMemoryExpenseRepository;
 import com.wimdeblauwe.examples.spendleaf.expense.usecase.GetExpenses;
+import com.wimdeblauwe.examples.spendleaf.project.Project;
+import com.wimdeblauwe.examples.spendleaf.project.ProjectId;
+import com.wimdeblauwe.examples.spendleaf.project.repository.InMemoryProjectRepository;
+import com.wimdeblauwe.examples.spendleaf.project.repository.ProjectRepository;
+import com.wimdeblauwe.examples.spendleaf.project.usecase.GetProjects;
 import org.htmlunit.WebClient;
 import org.htmlunit.html.HtmlPage;
 import org.htmlunit.html.HtmlTable;
@@ -37,11 +42,14 @@ class ExpenseControllerTest {
     private WebClient webClient;
     @Autowired
     private ExpenseRepository repository;
+    @Autowired
+    private ProjectRepository projectRepository;
 
     @BeforeEach
     void setUp() {
         // The in-memory repository is shared by all tests of this class
         repository.deleteAll();
+        projectRepository.deleteAll();
         webClient.getOptions().setCssEnabled(false);
         webClient.getOptions().setJavaScriptEnabled(false);
     }
@@ -71,6 +79,33 @@ class ExpenseControllerTest {
         assertThat(row.getCell(4).asNormalizedText()).isEqualTo("€238.00");
         assertThat(row.getCell(5).asNormalizedText()).isEqualTo("Draft");
         assertThat(page.getElementById("no-expenses")).isNull();
+    }
+
+    @Test
+    void testIndex_showsProjectName() throws Exception {
+        ProjectId projectId = projectRepository.nextId();
+        projectRepository.save(new Project(projectId, "Atlas"));
+        repository.save(expense().id(repository.nextId()).project(projectId).build());
+
+        HtmlPage page = webClient.getPage("/expenses");
+
+        HtmlTable table = page.getHtmlElementById("expenses-table");
+        assertThat(table.getRow(1).getCell(3).asNormalizedText()).isEqualTo("Atlas");
+    }
+
+    @Test
+    void testIndex_sortedByProjectName() throws Exception {
+        ProjectId borealis = projectRepository.nextId();
+        projectRepository.save(new Project(borealis, "Borealis"));
+        ProjectId atlas = projectRepository.nextId();
+        projectRepository.save(new Project(atlas, "Atlas"));
+        repository.save(expense().id(repository.nextId()).description("Hotel").project(borealis).build());
+        repository.save(expense().id(repository.nextId()).description("Lunch").project(null).build());
+        repository.save(expense().id(repository.nextId()).description("Train").project(atlas).build());
+
+        HtmlPage page = webClient.getPage("/expenses?sort=project");
+
+        assertThat(descriptions(page)).containsExactly("Train", "Hotel", "Lunch");
     }
 
     @Test
@@ -146,13 +181,23 @@ class ExpenseControllerTest {
     @TestConfiguration
     static class TestConfig {
         @Bean
-        ExpenseRepository expenseRepository() {
-            return new InMemoryExpenseRepository();
+        ProjectRepository projectRepository() {
+            return new InMemoryProjectRepository();
+        }
+
+        @Bean
+        ExpenseRepository expenseRepository(ProjectRepository projectRepository) {
+            return new InMemoryExpenseRepository(projectRepository);
         }
 
         @Bean
         GetExpenses getExpenses(ExpenseRepository expenseRepository) {
             return new GetExpenses(expenseRepository);
+        }
+
+        @Bean
+        GetProjects getProjects(ProjectRepository projectRepository) {
+            return new GetProjects(projectRepository);
         }
     }
 }

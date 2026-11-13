@@ -4,7 +4,9 @@ import com.wimdeblauwe.examples.spendleaf.expense.Expense;
 import com.wimdeblauwe.examples.spendleaf.expense.ExpenseId;
 import com.wimdeblauwe.examples.spendleaf.expense.ExpenseNotFoundException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
@@ -35,11 +37,22 @@ class JpaExpenseRepository implements ExpenseRepository {
 
     @Override
     public Page<Expense> findAll(Pageable pageable) {
-        return repository.findAll(pageable);
+        return repository.findAllWithProject(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                                                            sortProjectByName(pageable.getSort())));
     }
 
     @Override
     public void deleteAll() {
         repository.deleteAll();
+    }
+
+    /**
+     * An expense only stores the id of its project, so sorting on {@code project} sorts on the name of the joined
+     * project instead.
+     */
+    private static Sort sortProjectByName(Sort sort) {
+        return Sort.by(sort.stream()
+                               .map(order -> order.getProperty().equals("project") ? order.withProperty("p.name") : order)
+                               .toList());
     }
 }

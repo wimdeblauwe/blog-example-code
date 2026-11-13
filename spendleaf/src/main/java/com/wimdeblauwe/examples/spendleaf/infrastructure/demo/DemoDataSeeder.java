@@ -5,6 +5,9 @@ import com.wimdeblauwe.examples.spendleaf.expense.Expense;
 import com.wimdeblauwe.examples.spendleaf.expense.ExpenseCategory;
 import com.wimdeblauwe.examples.spendleaf.expense.ExpenseStatus;
 import com.wimdeblauwe.examples.spendleaf.expense.repository.ExpenseRepository;
+import com.wimdeblauwe.examples.spendleaf.project.Project;
+import com.wimdeblauwe.examples.spendleaf.project.ProjectId;
+import com.wimdeblauwe.examples.spendleaf.project.repository.ProjectRepository;
 import net.datafaker.Faker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -26,14 +30,16 @@ import java.util.Random;
 class DemoDataSeeder implements ApplicationRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(DemoDataSeeder.class);
     private static final int NUMBER_OF_EXPENSES = 120;
-    private static final String[] PROJECTS = {"Atlas", "Borealis", "Cygnus", "Draco"};
+    private static final List<String> PROJECTS = List.of("Atlas", "Borealis", "Cygnus", "Draco");
 
     private final ExpenseRepository repository;
+    private final ProjectRepository projectRepository;
     // A fixed seed gives the same demo data on every start
     private final Faker faker = new Faker(new Random(42));
 
-    DemoDataSeeder(ExpenseRepository repository) {
+    DemoDataSeeder(ExpenseRepository repository, ProjectRepository projectRepository) {
         this.repository = repository;
+        this.projectRepository = projectRepository;
     }
 
     @Override
@@ -42,13 +48,24 @@ class DemoDataSeeder implements ApplicationRunner {
             return;
         }
 
+        List<ProjectId> projectIds = projects();
         LOGGER.info("Seeding {} demo expenses", NUMBER_OF_EXPENSES);
         for (int i = 0; i < NUMBER_OF_EXPENSES; i++) {
-            repository.save(createExpense());
+            repository.save(createExpense(projectIds));
         }
     }
 
-    private Expense createExpense() {
+    private List<ProjectId> projects() {
+        if (projectRepository.findAll().isEmpty()) {
+            LOGGER.info("Seeding {} demo projects", PROJECTS.size());
+            for (String name : PROJECTS) {
+                projectRepository.save(new Project(projectRepository.nextId(), name));
+            }
+        }
+        return projectRepository.findAll().stream().map(Project::getId).toList();
+    }
+
+    private Expense createExpense(List<ProjectId> projectIds) {
         ExpenseCategory category = faker.options().option(ExpenseCategory.class);
         boolean forProject = category != ExpenseCategory.TRAINING && faker.bool().bool();
         Expense expense = new Expense(repository.nextId(),
@@ -56,7 +73,7 @@ class DemoDataSeeder implements ApplicationRunner {
                                       amount(category),
                                       LocalDate.now().minusDays(faker.number().numberBetween(0, 180)),
                                       category,
-                                      forProject ? faker.options().option(PROJECTS) : null,
+                                      forProject ? faker.options().nextElement(projectIds) : null,
                                       forProject && faker.bool().bool(),
                                       faker.number().numberBetween(0, 4) == 0 ? faker.lorem().sentence() : null);
         expense.setStatus(status());

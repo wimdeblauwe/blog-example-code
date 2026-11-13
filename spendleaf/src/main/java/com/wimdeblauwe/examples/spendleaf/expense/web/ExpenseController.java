@@ -1,6 +1,9 @@
 package com.wimdeblauwe.examples.spendleaf.expense.web;
 
 import com.wimdeblauwe.examples.spendleaf.expense.usecase.GetExpenses;
+import com.wimdeblauwe.examples.spendleaf.infrastructure.web.IdAndName;
+import com.wimdeblauwe.examples.spendleaf.infrastructure.web.IdAndNameCollection;
+import com.wimdeblauwe.examples.spendleaf.project.usecase.GetProjects;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -8,6 +11,7 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -20,9 +24,18 @@ class ExpenseController {
     private static final Set<String> SORTABLE = Set.of("description", "date", "category", "project", "amount", "status");
 
     private final GetExpenses getExpenses;
+    private final GetProjects getProjects;
 
-    ExpenseController(GetExpenses getExpenses) {
+    ExpenseController(GetExpenses getExpenses, GetProjects getProjects) {
         this.getExpenses = getExpenses;
+        this.getProjects = getProjects;
+    }
+
+    @ModelAttribute("projects")
+    public IdAndNameCollection projects() {
+        return new IdAndNameCollection(getProjects.execute().stream()
+                                               .map(project -> new IdAndName(project.getId().getId(), project.getName()))
+                                               .toList());
     }
 
     @GetMapping

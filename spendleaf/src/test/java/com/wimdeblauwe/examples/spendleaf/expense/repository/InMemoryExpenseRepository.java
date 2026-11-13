@@ -3,6 +3,10 @@ package com.wimdeblauwe.examples.spendleaf.expense.repository;
 import com.wimdeblauwe.examples.spendleaf.expense.Expense;
 import com.wimdeblauwe.examples.spendleaf.expense.ExpenseId;
 import com.wimdeblauwe.examples.spendleaf.expense.ExpenseNotFoundException;
+import com.wimdeblauwe.examples.spendleaf.project.Project;
+import com.wimdeblauwe.examples.spendleaf.project.ProjectId;
+import com.wimdeblauwe.examples.spendleaf.project.repository.ProjectRepository;
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -21,21 +25,27 @@ import static java.util.Comparator.nullsLast;
 /**
  * In-memory implementation for use case tests.
  * Without a sort, it pages in insertion order.
+ * Sorting on the project sorts on the project's name, as the JPA implementation does.
  */
 public class InMemoryExpenseRepository implements ExpenseRepository {
+    private final ProjectRepository projectRepository;
     // Nulls last, so a descending sort puts them first: the same as PostgreSQL does by default
-    private static final Map<String, Comparator<Expense>> COMPARATORS = Map.of(
+    private final Map<String, Comparator<Expense>> comparators = Map.of(
             "id", comparing(expense -> expense.getId().getId()),
             "description", comparing(Expense::getDescription),
             "amount", comparing(expense -> expense.getAmount().value()),
             "date", comparing(Expense::getDate),
             "category", comparing(Expense::getCategory),
-            "project", comparing(Expense::getProject, nullsLast(naturalOrder())),
+            "project", comparing(this::projectName, nullsLast(naturalOrder())),
             "billable", comparing(Expense::isBillable),
             "notes", comparing(Expense::getNotes, nullsLast(naturalOrder())),
             "status", comparing(Expense::getStatus));
 
     private final Map<ExpenseId, Expense> values = new LinkedHashMap<>();
+
+    public InMemoryExpenseRepository(ProjectRepository projectRepository) {
+        this.projectRepository = projectRepository;
+    }
 
     @Override
     public ExpenseId nextId() {
@@ -71,10 +81,19 @@ public class InMemoryExpenseRepository implements ExpenseRepository {
         values.clear();
     }
 
-    private static Comparator<Expense> comparator(Sort sort) {
+    private @Nullable String projectName(Expense expense) {
+        ProjectId projectId = expense.getProject();
+        return projectRepository.findAll().stream()
+                .filter(project -> project.getId().equals(projectId))
+                .map(Project::getName)
+                .findFirst()
+                .orElse(null);
+    }
+
+    private Comparator<Expense> comparator(Sort sort) {
         Comparator<Expense> result = (first, second) -> 0;
         for (Sort.Order order : sort) {
-            Comparator<Expense> comparator = COMPARATORS.get(order.getProperty());
+            Comparator<Expense> comparator = comparators.get(order.getProperty());
             if (comparator == null) {
                 throw new IllegalArgumentException("Unknown sort property for Expense: " + order.getProperty());
             }

@@ -1,5 +1,6 @@
 package com.wimdeblauwe.examples.spendleaf.expense;
 
+import com.wimdeblauwe.examples.spendleaf.project.ProjectId;
 import org.jspecify.annotations.Nullable;
 
 import java.time.LocalDate;
@@ -17,7 +18,7 @@ public class ExpenseMother {
         private Amount amount = Amount.ofEuros("238.00");
         private LocalDate date = LocalDate.of(2026, 11, 10);
         private ExpenseCategory category = ExpenseCategory.TRAVEL;
-        private @Nullable String project = "Atlas";
+        private @Nullable ProjectId project = null;
         private boolean billable = true;
         private @Nullable String notes = "Two nights for the workshop at the client's office in Ghent.";
 
@@ -46,7 +47,7 @@ public class ExpenseMother {
             return this;
         }
 
-        public Builder project(@Nullable String project) {
+        public Builder project(@Nullable ProjectId project) {
             this.project = project;
             return this;
         }

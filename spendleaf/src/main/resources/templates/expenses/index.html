@@ -12,6 +12,7 @@
 </th:block>
 <div id="page-content">
     <!--/*@thymesVar id="page" type="org.springframework.data.domain.Page<com.wimdeblauwe.examples.spendleaf.expense.Expense>"*/-->
+    <!--/*@thymesVar id="projects" type="com.wimdeblauwe.examples.spendleaf.infrastructure.web.IdAndNameCollection"*/-->
     <sl:card id="no-expenses" th:if="${page.totalElements == 0}">
         <sl:card-content>
             <sl:empty>
@@ -44,7 +45,7 @@
                 <td th:text="${expense.description}">Hotel Ghent, 2 nights</td>
                 <td th:text="${#temporals.format(expense.date, 'd MMM yyyy')}">10 Nov 2026</td>
                 <td th:text="#{|ExpenseCategory.${expense.category}|}">Travel</td>
-                <td th:text="${expense.project} ?: '—'">Atlas</td>
+                <td th:text="${projects.nameOf(expense.project)} ?: '—'">Atlas</td>
                 <td data-align="end"
                     th:text="|€${#numbers.formatDecimal(expense.amount.value, 1, 'DEFAULT', 2, 'DEFAULT')}|">€238.00</td>
                 <td>

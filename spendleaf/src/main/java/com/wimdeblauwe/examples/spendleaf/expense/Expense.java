@@ -1,5 +1,6 @@
 package com.wimdeblauwe.examples.spendleaf.expense;
 
+import com.wimdeblauwe.examples.spendleaf.project.ProjectId;
 import io.github.wimdeblauwe.jpearl.AbstractEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,7 +16,7 @@ public class Expense extends AbstractEntity<ExpenseId> {
     private LocalDate date;
     @Enumerated(EnumType.STRING)
     private ExpenseCategory category;
-    private @Nullable String project;
+    private @Nullable ProjectId project;
     private boolean billable;
     private @Nullable String notes;
     @Enumerated(EnumType.STRING)
@@ -29,7 +30,7 @@ public class Expense extends AbstractEntity<ExpenseId> {
                    Amount amount,
                    LocalDate date,
                    ExpenseCategory category,
-                   @Nullable String project,
+                   @Nullable ProjectId project,
                    boolean billable,
                    @Nullable String notes) {
         super(id);
@@ -75,11 +76,11 @@ public class Expense extends AbstractEntity<ExpenseId> {
         this.category = category;
     }
 
-    public @Nullable String getProject() {
+    public @Nullable ProjectId getProject() {
         return project;
     }
 
-    public void setProject(@Nullable String project) {
+    public void setProject(@Nullable ProjectId project) {
         this.project = project;
     }
 

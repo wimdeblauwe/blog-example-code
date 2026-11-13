@@ -3,6 +3,7 @@ package com.wimdeblauwe.examples.spendleaf.expense.usecase;
 import com.wimdeblauwe.examples.spendleaf.expense.Amount;
 import com.wimdeblauwe.examples.spendleaf.expense.Expense;
 import com.wimdeblauwe.examples.spendleaf.expense.repository.InMemoryExpenseRepository;
+import com.wimdeblauwe.examples.spendleaf.project.repository.InMemoryProjectRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,7 @@ class GetExpensesTest {
 
     @BeforeEach
     void setUp() {
-        repository = new InMemoryExpenseRepository();
+        repository = new InMemoryExpenseRepository(new InMemoryProjectRepository());
         getExpenses = new GetExpenses(repository);
     }
 
